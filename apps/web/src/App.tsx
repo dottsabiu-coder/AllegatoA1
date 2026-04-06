@@ -15,7 +15,7 @@ const STEP_LABELS = [
 ] as const;
 
 function Wizard() {
-  const { data, setStudio, setStaff, setEquipment, setExternal, setInsurance, setPremises, setFacility, setMeta } =
+  const { data, setData, setStudio, setStaff, setEquipment, setExternal, setInsurance, setPremises, setFacility, setMeta } =
     useFormCtx();
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -49,12 +49,16 @@ function Wizard() {
       case 0:
         return (
           <div className="field-grid">
-            <label className="field">
-              Nome struttura
+            <label className="field" style={{ gridColumn: "1 / -1" }}>
+              Ragione sociale / denominazione struttura
               <input
                 value={data.studio.structureName}
                 onChange={(e) => setStudio({ structureName: e.target.value })}
               />
+              <span className="hint">
+                Inserire il testo ufficiale completo (come in visura o insegna), senza abbreviazioni non previste da atti
+                pubblici: sarà riportato identico nei frontespizi PDF.
+              </span>
             </label>
             <label className="field">
               Titolare
@@ -90,6 +94,77 @@ function Wizard() {
                 onChange={(e) => setMeta({ revisionLabel: e.target.value })}
               />
             </label>
+            <div style={{ gridColumn: "1 / -1", marginTop: "0.5rem" }}>
+              <strong className="muted">Sistema informativo — documento 2 (privacy)</strong>
+              <p className="muted" style={{ margin: "0.35rem 0 0.5rem", fontSize: "0.88rem" }}>
+                Opzionale ma consigliato: dettagli su software, backup e analisi rischi per arricchire il PDF (requisito
+                1A.01.04.01).
+              </p>
+              <div className="field-grid">
+                <label className="field" style={{ gridColumn: "1 / -1" }}>
+                  Software cartella clinica / clinico
+                  <input
+                    value={data.itProfile.clinicalSoftware ?? ""}
+                    onChange={(e) =>
+                      setData((d) => ({
+                        ...d,
+                        itProfile: { ...d.itProfile, clinicalSoftware: e.target.value },
+                      }))
+                    }
+                  />
+                </label>
+                <label className="field" style={{ gridColumn: "1 / -1" }}>
+                  Software gestionale / amministrativo
+                  <input
+                    value={data.itProfile.managementSoftware ?? ""}
+                    onChange={(e) =>
+                      setData((d) => ({
+                        ...d,
+                        itProfile: { ...d.itProfile, managementSoftware: e.target.value },
+                      }))
+                    }
+                  />
+                </label>
+                <label className="field" style={{ gridColumn: "1 / -1" }}>
+                  Sistemi operativi e postazioni (riepilogo)
+                  <input
+                    placeholder="es. Windows 11 — 3 postazioni"
+                    value={data.itProfile.osSummary ?? ""}
+                    onChange={(e) =>
+                      setData((d) => ({
+                        ...d,
+                        itProfile: { ...d.itProfile, osSummary: e.target.value },
+                      }))
+                    }
+                  />
+                </label>
+                <label className="field" style={{ gridColumn: "1 / -1" }}>
+                  Modalità di backup
+                  <input
+                    placeholder="es. incrementale notturno su NAS + cloud cifrato"
+                    value={data.itProfile.backupModality ?? ""}
+                    onChange={(e) =>
+                      setData((d) => ({
+                        ...d,
+                        itProfile: { ...d.itProfile, backupModality: e.target.value },
+                      }))
+                    }
+                  />
+                </label>
+                <label className="field" style={{ gridColumn: "1 / -1" }}>
+                  Sintesi analisi rischi (privacy / sicurezza logica)
+                  <textarea
+                    value={data.itProfile.riskAnalysisSummary ?? ""}
+                    onChange={(e) =>
+                      setData((d) => ({
+                        ...d,
+                        itProfile: { ...d.itProfile, riskAnalysisSummary: e.target.value },
+                      }))
+                    }
+                  />
+                </label>
+              </div>
+            </div>
           </div>
         );
       case 1:

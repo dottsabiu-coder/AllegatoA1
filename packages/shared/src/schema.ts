@@ -63,6 +63,16 @@ export const allegatoFormSchema = z.object({
     hasMedicalGas: z.boolean().default(false),
     hasInterns: z.boolean().default(false),
   }),
+  /** Dettagli opzionali per il documento sul sistema informativo / privacy (requisito 1A.01.04.01). */
+  itProfile: z
+    .object({
+      clinicalSoftware: z.string().trim().optional(),
+      managementSoftware: z.string().trim().optional(),
+      osSummary: z.string().trim().optional(),
+      backupModality: z.string().trim().optional(),
+      riskAnalysisSummary: z.string().trim().optional(),
+    })
+    .default({}),
 });
 
 export type AllegatoFormData = z.infer<typeof allegatoFormSchema>;
@@ -97,4 +107,5 @@ export const defaultAllegatoFormData: AllegatoFormData = {
     notes: "",
   },
   facility: { hasIonizingRadiation: false, hasMedicalGas: false, hasInterns: false },
+  itProfile: {},
 };

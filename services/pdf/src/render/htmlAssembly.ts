@@ -44,7 +44,7 @@ export function buildAllegatoHtml(docs: ResolvedDocument[], data: AllegatoFormDa
         </article>
         <footer class="doc-footer-local">
           <p><strong>Firma del Titolare</strong> _________________________________</p>
-          <p class="muted">${owner} — ${dateStr} — ${revision}</p>
+          <p class="muted">${revision} — ${escapeHtml(dateStr)}</p>
         </footer>
       </section>`;
     })
@@ -77,9 +77,13 @@ export function buildAllegatoHtml(docs: ResolvedDocument[], data: AllegatoFormDa
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
+      word-wrap: break-word;
+      overflow-wrap: anywhere;
     }
     .h-code { font-weight: 600; }
     .doc-body { margin: 0.8rem 0 1.2rem; }
+    .doc-body h2 { font-size: 11.5pt; margin: 0.85rem 0 0.4rem; font-weight: 700; }
+    .doc-body h3 { font-size: 10.8pt; margin: 0.65rem 0 0.3rem; font-weight: 700; }
     .doc-body p { margin: 0 0 0.55rem; text-align: justify; }
     .doc-body ul { margin: 0.4rem 0 0 1.1rem; }
     .doc-footer-local { margin-top: 1.5rem; font-size: 10pt; }

@@ -92,8 +92,8 @@ app.post("/generate", async (request, reply) => {
       displayHeaderFooter: true,
       headerTemplate: "<div></div>",
       footerTemplate: `
-        <div style="width:100%;font-size:9px;padding:0 12mm;color:#333;font-family:Times New Roman,serif;display:flex;justify-content:space-between;">
-          <span>${escapeAttr(data.studio.ownerDisplayName)}</span>
+        <div style="width:100%;font-size:9px;padding:0 12mm;color:#333;font-family:Times New Roman,serif;display:flex;justify-content:space-between;align-items:center;">
+          <span>${escapeAttr(data.studio.structureName)}</span>
           <span>Pag. <span class="pageNumber"></span> di <span class="totalPages"></span></span>
           <span>${escapeAttr(data.meta.revisionLabel)}</span>
         </div>`,
