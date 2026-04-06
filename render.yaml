@@ -1,0 +1,17 @@
+# Blueprint Render: collega il repo dalla dashboard e usa "Apply blueprint" oppure crea un Web Service manuale.
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: allegato-a1-pdf
+    runtime: docker
+    region: frankfurt
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Opzionale: domini extra (custom). *.vercel.app è consentito di default per produzione e preview.
+      - key: CORS_ORIGIN
+        sync: false

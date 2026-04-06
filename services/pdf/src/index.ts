@@ -5,13 +5,51 @@ import { allegatoFormSchema, resolveDocuments } from "@allegato-a1/shared";
 import { buildAllegatoHtml } from "./render/htmlAssembly.js";
 
 const PORT = Number(process.env.PORT) || 8787;
-const CORS_ORIGIN = process.env.CORS_ORIGIN?.split(",").map((s) => s.trim()).filter(Boolean) ?? true;
+
+/** Origini consentite: lista separata da virgola, senza slash finale. Se assente/vuota → riflette l'origine richiesta. */
+function resolveCorsOrigin(): boolean | string[] {
+  const raw = process.env.CORS_ORIGIN?.trim();
+  if (!raw) return true;
+  const list = raw
+    .split(",")
+    .map((s) => s.trim().replace(/\/+$/, ""))
+    .filter(Boolean);
+  return list.length > 0 ? list : true;
+}
+
+/** Se true, non accettare automaticamente i domini *.vercel.app (solo la lista CORS_ORIGIN). */
+const noVercelWildcard =
+  process.env.CORS_NO_VERCEL_WILDCARD?.trim() === "1" ||
+  process.env.CORS_NO_VERCEL_WILDCARD?.trim() === "true";
 
 const app = Fastify({ logger: true });
 
+const corsOriginConfig = resolveCorsOrigin();
+
 await app.register(cors, {
-  origin: CORS_ORIGIN,
+  origin: (origin, cb) => {
+    if (corsOriginConfig === true) {
+      cb(null, true);
+      return;
+    }
+    if (!origin) {
+      cb(null, true);
+      return;
+    }
+    if (corsOriginConfig.includes(origin)) {
+      cb(null, true);
+      return;
+    }
+    /* Deploy preview Vercel: origine tipo *-git-*-*.vercel.app; non coincide col dominio "production". */
+    if (!noVercelWildcard && isVercelPreviewOrigin(origin)) {
+      cb(null, true);
+      return;
+    }
+    app.log.warn({ origin }, "CORS: origine rifiutata");
+    cb(null, false);
+  },
   methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Accept"],
 });
 
 app.get("/health", async () => ({ ok: true }));
@@ -70,6 +108,15 @@ app.post("/generate", async (request, reply) => {
     await browser.close();
   }
 });
+
+function isVercelPreviewOrigin(origin: string): boolean {
+  try {
+    const u = new URL(origin);
+    return u.protocol === "https:" && u.hostname.endsWith(".vercel.app");
+  } catch {
+    return false;
+  }
+}
 
 function escapeAttr(s: string): string {
   return s.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;");
