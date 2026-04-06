@@ -1,0 +1,8 @@
+# PDF solo in locale — non su GitHub
+docs/normativa/*.pdf
+
+# (opzionale, per quando avrai il codice Node)
+node_modules/
+dist/
+.env
+.env.*
