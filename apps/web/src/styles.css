@@ -1,15 +1,26 @@
 :root {
   color-scheme: light;
-  --bg: #f6f7f9;
+  /* AIO brand (da linee guida logo) */
+  --aio-teal: #3d6359;
+  --aio-teal-dark: #2d4a42;
+  --aio-burgundy: #961e3c;
+  --aio-burgundy-dark: #73152e;
+  --aio-text-grey: #555555;
+  --aio-silver: #999999;
+
+  --bg: #f0f4f3;
+  --bg-gradient-mid: #f6f8f7;
   --surface: #ffffff;
-  --border: #d7dbe3;
+  --border: #d4dcd9;
   --text: #1a1d24;
-  --muted: #5c6370;
-  --accent: #0b5fff;
-  --accent-hover: #0847c4;
+  --muted: var(--aio-text-grey);
+  --accent: var(--aio-teal);
+  --accent-hover: var(--aio-teal-dark);
+  --accent-secondary: var(--aio-burgundy);
   --danger: #b42318;
-  --radius: 10px;
-  --shadow: 0 8px 24px rgba(20, 30, 50, 0.06);
+  --radius: 12px;
+  --shadow: 0 10px 36px rgba(45, 74, 66, 0.08);
+  --shadow-soft: 0 4px 20px rgba(20, 30, 50, 0.05);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
   line-height: 1.45;
   color: var(--text);
@@ -22,36 +33,107 @@
 
 body {
   margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(165deg, var(--bg) 0%, var(--bg-gradient-mid) 45%, #eef1f4 100%);
 }
 
 a {
   color: var(--accent);
 }
 
+a:hover {
+  color: var(--aio-burgundy);
+}
+
 .shell {
-  max-width: 920px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 1.5rem 1.25rem 3rem;
 }
 
-.topbar {
+/* Header / hero — solo web, non PDF */
+.site-header {
+  margin-bottom: 1.5rem;
+}
+
+.brand-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 1.35rem 1.5rem;
+  border-top: 4px solid var(--aio-teal);
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--aio-burgundy));
+  opacity: 0.85;
+}
+
+.brand-row {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem 1.75rem;
 }
 
-.topbar h1 {
+.brand-logo {
+  display: block;
+  height: auto;
+  max-height: 76px;
+  width: auto;
+  max-width: min(280px, 100%);
+  object-fit: contain;
+}
+
+.brand-copy {
+  flex: 1;
+  min-width: 220px;
+}
+
+.brand-copy h1 {
   margin: 0;
-  font-size: 1.35rem;
-  letter-spacing: -0.02em;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--aio-teal-dark);
+  line-height: 1.2;
 }
 
-.topbar p {
-  margin: 0.15rem 0 0;
-  font-size: 0.9rem;
-  color: var(--muted);
+.brand-badge {
+  display: inline-block;
+  margin-top: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--aio-burgundy);
+  border-radius: 4px;
+}
+
+.brand-tagline {
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+  color: var(--aio-text-grey);
+  max-width: 36rem;
+}
+
+.brand-note {
+  margin: 0.65rem 0 0;
+  font-size: 0.82rem;
+  color: var(--aio-silver);
+  max-width: 40rem;
+  line-height: 1.4;
 }
 
 .card {
@@ -60,6 +142,7 @@ a {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 1.25rem 1.35rem;
+  border-left: 3px solid var(--aio-teal);
 }
 
 .field-grid {
@@ -96,6 +179,17 @@ textarea {
 textarea {
   min-height: 72px;
   resize: vertical;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--aio-teal);
+  outline-offset: 2px;
+}
+
+button:focus-visible {
+  outline-offset: 3px;
 }
 
 .row-check {
@@ -144,12 +238,14 @@ button.secondary {
 }
 
 button.primary {
-  background: var(--accent);
+  background: linear-gradient(180deg, var(--aio-teal) 0%, var(--aio-teal-dark) 100%);
   color: #fff;
+  box-shadow: 0 2px 8px rgba(61, 99, 89, 0.35);
 }
 
 button.primary:hover:not(:disabled) {
-  background: var(--accent-hover);
+  background: linear-gradient(180deg, var(--aio-teal-dark) 0%, #243830 100%);
+  box-shadow: 0 3px 12px rgba(61, 99, 89, 0.45);
 }
 
 button.secondary {

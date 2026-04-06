@@ -527,10 +527,28 @@ export function App() {
   return (
     <FormProvider>
       <div className="shell">
-        <header className="topbar">
-          <div>
-            <h1>Allegato A1 — compilazione</h1>
-            <p>Struttura monopresidio — bozza tecnica (testi PDF da legalizzare su modulo ufficiale).</p>
+        <header className="site-header">
+          <div className="brand-card">
+            <div className="brand-row">
+              <img
+                className="brand-logo"
+                src="/aio-logo.png"
+                alt="Associazione Italiana Odontoiatri — aio"
+                decoding="async"
+              />
+              <div className="brand-copy">
+                <h1>Allegato A1 — compilazione guidata</h1>
+                <span className="brand-badge">Strumento AIO</span>
+                <p className="brand-tagline">
+                  Raccolta dati e generazione del fascicolo PDF per la struttura sanitaria monopresidio (contesto normativo
+                  Sicilia / D.A. 20/2024).
+                </p>
+                <p className="brand-note">
+                  I testi del PDF sono bozza tecnica: verificarli e adeguarli al modulo regionale ufficiale e al Manuale OTA
+                  prima di ogni uso formale.
+                </p>
+              </div>
+            </div>
           </div>
         </header>
         <Wizard />
