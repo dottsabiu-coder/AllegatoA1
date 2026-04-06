@@ -1,0 +1,20 @@
+{
+  "name": "allegato-a1",
+  "private": true,
+  "packageManager": "npm@10.9.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @allegato-a1/shared && npm run build -w @allegato-a1/web && npm run build -w @allegato-a1/pdf-service",
+    "dev": "npm run build -w @allegato-a1/shared && concurrently -n shared,web,pdf -c blue,green,magenta \"npm run dev -w @allegato-a1/shared\" \"npm run dev -w @allegato-a1/web\" \"npm run dev -w @allegato-a1/pdf-service\"",
+    "dev:web": "npm run dev -w @allegato-a1/web",
+    "dev:pdf": "npm run dev -w @allegato-a1/pdf-service"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "typescript": "^5.7.3"
+  }
+}

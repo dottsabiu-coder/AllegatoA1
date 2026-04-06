@@ -1,0 +1,42 @@
+---
+description: Elenco ufficiale 32 documenti Allegato A1 con Cod. Requisito (ordine PDF)
+globs: packages/shared/**/*,apps/web/**/*,services/pdf/**/*
+alwaysApply: false
+---
+
+# Allegato A1 — 32 documenti (ordine e codici)
+
+Ordine e codici come da checklist modulo regionale; titoli possono richiedere virgola esatta rispetto al PDF ufficiale in `docs/normativa/`.
+
+1. Organizzazione e politiche risorse — **1A.01.03.01**
+2. Sistema informativo / Privacy — **1A.01.04.01**
+3. Valutazione e miglioramento qualità — **1A.01.05.01**
+4. Procedura gestione reclami — **1A.01.06.01**
+5. Erogazione assistenza — **1A.02.02.01**
+6. Piano gestione emergenze — **1A.02.02.02**
+7. Protocollo isolamento patologie contagiose — **1A.02.02.03**
+8. Gestione documentazione sanitaria — **1A.02.05.01**
+9. Incarico responsabile manutenzione — **1A.03.01.01**
+10. Inventario attrezzature — **1A.03.02.01**
+11. Piano manutenzione strutture e apparecchiature — **1A.03.02.02**
+12. Documentazione tecnica attrezzature — **1A.03.02.03**
+13. Caratteristiche ambientali e accessibilità — **1A.03.05.01**
+14. Protezione antincendio — **1A.03.05.02**
+15. Protezione acustica — **1A.03.05.03**
+16. Sicurezza e continuità elettrica — **1A.03.05.04**
+17. Sicurezza anti-infortunistica e DVR — **1A.03.05.05**
+18. Protezione radiazioni ionizzanti — **1A.03.05.06**
+19. Eliminazione barriere architettoniche — **1A.03.05.07**
+20. Smaltimento rifiuti — **1A.03.05.08**
+21. Condizioni microclimatiche — **1A.03.05.09**
+22. Impianti distribuzione gas (se applicabile) — **1A.03.05.10**
+23. Dichiarazione materiali esplodenti (assenza) — **1A.03.05.11**
+24. Protezione antisismica — **1A.03.05.12**
+25. Obblighi assicurativi — **1A.04.12.04**
+26. Carta dei servizi — **1A.05.03.01**
+27. Modalità identificazione tirocinanti — **1A.05.03.03**
+28. Report criticità e customer satisfaction — **1A.05.03.05**
+29. Piano aziendale gestione rischio — **1A.06.02.01**
+30. Procedura pulizia e sanificazione — **1A.06.02.02**
+31. Protezione incidenti materiale biologico — **1A.06.02.03**
+32. Sistema segnalazione near miss ed eventi avversi — **1A.06.02.04**

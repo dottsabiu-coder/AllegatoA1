@@ -1,0 +1,20 @@
+---
+description: Allegato A1 — dominio normativo siciliano, layout PDF OTA, stack monorepo
+alwaysApply: true
+---
+
+# Allegato A1 — obiettivo prodotto
+
+L’app supporta la compilazione e la generazione dell’**Allegato A1** per le **strutture non residenziali semplici monopresidio** (studio medico/odontoiatrico con un solo professionista), secondo i requisiti introdotti in Sicilia dal **D.A. 9 gennaio 2024, n. 20**. Il pacchetto PDF deve contenere **32 documenti distinti**, ciascuno con **titolo e “Cod. Requisito” esatti** come da modulo regionale (riferimento tipico: *12_Mod. ALL. A1.pdf* in `docs/normativa/`, solo locale).
+
+**Fonti di riferimento (verificare sempre sui PDF ufficiali in locale):** D.A. 20/2024 Sicilia, **Manuale OTA MAMB 3.0**, **D.A. 890/2002** (parte medico-odontoiatrica di base). Non inventare codici o titoli: allineare a modulo e manuale.
+
+**Layout PDF (accreditamento / aspettative OTA):** all’inizio di ogni documento, intestazione ripetuta: (1) nome struttura centrato e in grassetto; (2) indirizzo completo centrato; (3) riga istituzionale con **DOCUMENTO N. [X]: [titolo esatto]** e **Cod. Requisito [codice esatto]** (evidenziata). Footer: titolare, **Pag. X di Y**, data/revisione (es. REV. 1/2024). A fine sezione, spazio firma titolare. I page-break devono rispettare l’inizio di ogni nuovo “DOCUMENTO N. X”.
+
+**Logica condizionale (esempi):** assenza apparecchiature RX → documento 18 (1A.03.05.06) con testo di **assenza** coerente; gas medicali assenti → gestire 1A.03.05.10; altre voci solo se applicabili al profilo studio.
+
+**Frontend:** wizard multi-step per anagrafica studio, risorse umane, attrezzature/impianti, fornitori esterni (RSPP, medico competente, fisica medica se RX), assicurazione (Gelli-Bianco), layout locali. **Dati:** progettare uno **schema/JSON** unico senza ridondanza; mapping form → 32 template.
+
+**Stack monorepo:** `apps/web` React+Vite; `services/pdf` generazione PDF (es. Playwright); tipi/registry/template in `packages/shared`. PDF di normativa solo in **`docs/normativa/`**, **gitignored** — non assumere presenza in CI. Deploy tipico: frontend **Vercel**, servizio PDF **Railway** (env coordinati).
+
+**Cursor:** usa `@file` su README, registry condiviso e servizio PDF quando implementati. Per l’ordine e i codici dei 32 documenti vedi `.cursor/rules/allegato-a1-requisiti-32.mdc`.
