@@ -1,5 +1,5 @@
-# Servizio PDF su Railway (Playwright + Chromium già nell'immagine base)
-FROM mcr.microsoft.com/playwright:v1.49.1-noble
+# Deve coincidere con la versione `playwright` in services/pdf/package.json (browser in /ms-playwright/).
+FROM mcr.microsoft.com/playwright:v1.59.1-noble
 
 WORKDIR /app
 
