@@ -7,7 +7,7 @@ import { buildAllegatoHtml } from "./render/htmlAssembly.js";
 const PORT = Number(process.env.PORT) || 8787;
 
 /** Origini consentite: lista separata da virgola, senza slash finale. Se assente/vuota → riflette l'origine richiesta. */
-function resolveCorsOrigin(): boolean | string[] {
+function resolveCorsOrigin(): readonly string[] | true {
   const raw = process.env.CORS_ORIGIN?.trim();
   if (!raw) return true;
   const list = raw
@@ -36,7 +36,7 @@ await app.register(cors, {
       cb(null, true);
       return;
     }
-    if (corsOriginConfig.includes(origin)) {
+    if (Array.isArray(corsOriginConfig) && corsOriginConfig.includes(origin)) {
       cb(null, true);
       return;
     }
