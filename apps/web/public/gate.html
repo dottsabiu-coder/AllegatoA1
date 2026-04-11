@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Accesso — Allegato A1</title>
+    <style>
+      :root {
+        --teal: #3d6359;
+        --burgundy: #961e3c;
+        --bg: #f0f4f3;
+        --card: #fff;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, Segoe UI, Roboto, sans-serif;
+        background: linear-gradient(165deg, var(--bg), #eef1f4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.25rem;
+        color: #1a1d24;
+      }
+      .card {
+        background: var(--card);
+        border-radius: 12px;
+        box-shadow: 0 10px 36px rgba(45, 74, 66, 0.1);
+        border-top: 4px solid var(--teal);
+        max-width: 420px;
+        width: 100%;
+        padding: 1.75rem 1.5rem;
+      }
+      h1 {
+        margin: 0 0 0.35rem;
+        font-size: 1.2rem;
+        color: var(--teal);
+      }
+      p {
+        margin: 0 0 1rem;
+        font-size: 0.9rem;
+        color: #555;
+        line-height: 1.45;
+      }
+      label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-bottom: 0.35rem;
+      }
+      input {
+        width: 100%;
+        padding: 0.6rem 0.65rem;
+        border: 1px solid #d4dcd9;
+        border-radius: 8px;
+        font: inherit;
+        margin-bottom: 1rem;
+      }
+      button {
+        width: 100%;
+        padding: 0.65rem 1rem;
+        border: none;
+        border-radius: 10px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        background: linear-gradient(180deg, var(--teal), #2d4a42);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(61, 99, 89, 0.35);
+      }
+      button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      .err {
+        background: #fde8e6;
+        color: #b42318;
+        padding: 0.55rem 0.65rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        margin-bottom: 0.85rem;
+        display: none;
+      }
+      .err.show {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Accesso riservato</h1>
+      <p>Inserisci il <strong>codice monouso</strong> che ti è stato fornito. Dopo l’accesso il codice non potrà essere riutilizzato.</p>
+      <div id="err" class="err"></div>
+      <form id="f">
+        <label for="token">Codice di accesso</label>
+        <input id="token" name="token" autocomplete="off" autocapitalize="off" spellcheck="false" required />
+        <button type="submit" id="btn">Accedi</button>
+      </form>
+    </div>
+    <script>
+      (function () {
+        var form = document.getElementById("f");
+        var err = document.getElementById("err");
+        var btn = document.getElementById("btn");
+        function showErr(msg) {
+          err.textContent = msg;
+          err.classList.add("show");
+        }
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          err.classList.remove("show");
+          var token = document.getElementById("token").value.trim().replace(/\s+/g, "");
+          if (!/^[a-f0-9]{64}$/i.test(token)) {
+            showErr("Il codice non ha il formato atteso (64 caratteri esadecimali).");
+            return;
+          }
+          btn.disabled = true;
+          fetch("/api/auth/redeem", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: token }),
+            credentials: "same-origin",
+          })
+            .then(function (r) {
+              return r.json().then(function (j) {
+                return { ok: r.ok, j: j };
+              });
+            })
+            .then(function (_ref) {
+              if (_ref.ok) {
+                window.location.replace("/");
+                return;
+              }
+              showErr(_ref.j.error || "Accesso negato.");
+              btn.disabled = false;
+            })
+            .catch(function () {
+              showErr("Errore di rete. Riprova.");
+              btn.disabled = false;
+            });
+        });
+      })();
+    </script>
+  </body>
+</html>
