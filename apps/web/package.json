@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@allegato-a1/shared": "*",
+    "@vercel/kv": "^3.0.0",
+    "jose": "^6.0.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
