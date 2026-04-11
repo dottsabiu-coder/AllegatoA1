@@ -1,7 +1,7 @@
 import { verifySessionToken } from "./lib/auth-jwt.js";
 
 /**
- * Solo ingresso SPA: / e index.html. Non tocca /assets/*, /api/*, /gate.html, favicon, ecc.
+ * Solo ingresso SPA: / e index.html. Non tocca /assets/*, /api/*, /gate.html, /owner.html, ecc.
  */
 export const config = {
   matcher: ["/", "/index.html"],
@@ -32,6 +32,7 @@ export default async function middleware(request: Request): Promise<Response | u
   const path = url.pathname;
 
   if (path === "/gate.html") return undefined;
+  if (path === "/owner.html") return undefined;
   if (path.startsWith("/api/auth/")) return undefined;
   if (path.startsWith("/assets/")) return undefined;
   if (/\.(ico|png|svg|webp|css|js|map|woff2?|txt|html)$/i.test(path)) return undefined;

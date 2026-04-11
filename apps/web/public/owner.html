@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Genera codici accesso — Allegato A1</title>
+    <style>
+      :root {
+        --teal: #3d6359;
+        --bg: #f0f4f3;
+        --card: #fff;
+        --err-bg: #fde8e6;
+        --err: #b42318;
+        --ok-bg: #e8f5f0;
+        --ok: #1d5c4a;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, Segoe UI, Roboto, sans-serif;
+        background: linear-gradient(165deg, var(--bg), #eef1f4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.25rem;
+        color: #1a1d24;
+      }
+      .card {
+        background: var(--card);
+        border-radius: 12px;
+        box-shadow: 0 10px 36px rgba(45, 74, 66, 0.1);
+        border-top: 4px solid var(--teal);
+        max-width: 520px;
+        width: 100%;
+        padding: 1.75rem 1.5rem;
+      }
+      h1 {
+        margin: 0 0 0.35rem;
+        font-size: 1.2rem;
+        color: var(--teal);
+      }
+      .sub {
+        margin: 0 0 1.1rem;
+        font-size: 0.82rem;
+        color: #666;
+        line-height: 1.45;
+      }
+      label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-bottom: 0.35rem;
+      }
+      input[type="password"],
+      input[type="number"] {
+        width: 100%;
+        padding: 0.6rem 0.65rem;
+        border: 1px solid #d4dcd9;
+        border-radius: 8px;
+        font: inherit;
+        margin-bottom: 0.85rem;
+      }
+      .row {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-end;
+        margin-bottom: 0.85rem;
+      }
+      .row > div {
+        flex: 1;
+      }
+      button.primary {
+        width: 100%;
+        padding: 0.65rem 1rem;
+        border: none;
+        border-radius: 10px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        background: linear-gradient(180deg, var(--teal), #2d4a42);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(61, 99, 89, 0.35);
+        margin-bottom: 0.75rem;
+      }
+      button.primary:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      button.secondary {
+        padding: 0.45rem 0.75rem;
+        border: 1px solid #c5d4cf;
+        border-radius: 8px;
+        font: inherit;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        background: #fff;
+        color: var(--teal);
+      }
+      .err {
+        background: var(--err-bg);
+        color: var(--err);
+        padding: 0.55rem 0.65rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        margin-bottom: 0.85rem;
+        display: none;
+      }
+      .err.show {
+        display: block;
+      }
+      .out {
+        display: none;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: var(--ok-bg);
+        border-radius: 10px;
+        border: 1px solid #b8d9ce;
+      }
+      .out.show {
+        display: block;
+      }
+      .token {
+        font-family: ui-monospace, Consolas, monospace;
+        font-size: 0.72rem;
+        word-break: break-all;
+        margin: 0.5rem 0;
+        padding: 0.65rem;
+        background: #fff;
+        border-radius: 8px;
+        border: 1px solid #c5d4cf;
+        user-select: all;
+      }
+      .meta {
+        font-size: 0.8rem;
+        color: #444;
+        margin: 0.25rem 0;
+      }
+      .actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-top: 0.65rem;
+      }
+      .warn {
+        font-size: 0.78rem;
+        color: #7a4a00;
+        background: #fff8e6;
+        padding: 0.55rem 0.65rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Codici monouso</h1>
+      <p class="sub">
+        Riservato ai <strong>titolari</strong> del servizio. Genera un codice da consegnare all’utente finale; dopo il primo utilizzo non sarà più valido. Il codice compare <strong>una sola volta</strong> qui: copialo subito o rigenerane uno nuovo.
+      </p>
+      <div id="err" class="err"></div>
+      <form id="f">
+        <label for="secret">Segreto amministratore (<code>ACCESS_ADMIN_SECRET</code>)</label>
+        <input id="secret" name="secret" type="password" autocomplete="current-password" required />
+        <div class="row">
+          <div>
+            <label for="ttl">Validità (ore)</label>
+            <input id="ttl" name="ttl" type="number" min="1" max="720" value="168" required />
+          </div>
+        </div>
+        <button type="submit" class="primary" id="btn">Genera codice</button>
+      </form>
+      <div id="out" class="out">
+        <strong style="color: var(--ok)">Codice generato</strong>
+        <div id="tok" class="token"></div>
+        <p class="meta" id="exp"></p>
+        <div class="actions">
+          <button type="button" class="secondary" id="copy">Copia codice</button>
+        </div>
+      </div>
+      <p class="warn">
+        Non condividere questa pagina con i clienti. Usa solo connessioni sicure (HTTPS). Il segreto non viene salvato dal browser dopo l’invio.
+      </p>
+    </div>
+    <script>
+      (function () {
+        var form = document.getElementById("f");
+        var err = document.getElementById("err");
+        var btn = document.getElementById("btn");
+        var out = document.getElementById("out");
+        var tok = document.getElementById("tok");
+        var exp = document.getElementById("exp");
+        var copyBtn = document.getElementById("copy");
+        var lastToken = "";
+
+        function showErr(msg) {
+          err.textContent = msg;
+          err.classList.add("show");
+        }
+        function hideErr() {
+          err.classList.remove("show");
+        }
+
+        copyBtn.addEventListener("click", function () {
+          if (!lastToken) return;
+          navigator.clipboard.writeText(lastToken).then(
+            function () {
+              copyBtn.textContent = "Copiato!";
+              setTimeout(function () {
+                copyBtn.textContent = "Copia codice";
+              }, 2000);
+            },
+            function () {
+              copyBtn.textContent = "Seleziona e copia (Ctrl+C)";
+            }
+          );
+        });
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          hideErr();
+          out.classList.remove("show");
+          var secret = document.getElementById("secret").value;
+          var ttl = parseInt(document.getElementById("ttl").value, 10);
+          if (!secret || !secret.trim()) {
+            showErr("Inserisci il segreto amministratore.");
+            return;
+          }
+          if (!Number.isFinite(ttl) || ttl < 1 || ttl > 720) {
+            showErr("Le ore devono essere tra 1 e 720.");
+            return;
+          }
+          btn.disabled = true;
+          fetch("/api/auth/mint", {
+            method: "POST",
+            headers: {
+              Authorization: "Bearer " + secret.trim(),
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ttlHours: ttl }),
+            credentials: "same-origin",
+          })
+            .then(function (r) {
+              return r.json().then(function (j) {
+                return { ok: r.ok, status: r.status, j: j };
+              });
+            })
+            .then(function (x) {
+              btn.disabled = false;
+              if (x.ok && x.j.token) {
+                lastToken = x.j.token;
+                tok.textContent = lastToken;
+                exp.textContent =
+                  "Scadenza indicativa: " +
+                  (x.j.expiresAt || "—") +
+                  " · durata richiesta: " +
+                  (x.j.ttlHours != null ? x.j.ttlHours + " h" : ttl + " h");
+                out.classList.add("show");
+                return;
+              }
+              var msg = x.j.error || "Errore (" + x.status + ").";
+              if (x.status === 401) msg = "Segreto non valido o non autorizzato.";
+              showErr(msg);
+            })
+            .catch(function () {
+              btn.disabled = false;
+              showErr("Errore di rete. Controlla la connessione e riprova.");
+            });
+        });
+      })();
+    </script>
+  </body>
+</html>
