@@ -55,57 +55,68 @@ export function buildAllegatoHtml(docs: ResolvedDocument[], data: AllegatoFormDa
 <head>
   <meta charset="utf-8" />
   <style>
-    /* Allineato ai margini page.pdf in index.ts: fascia utile più stretta → più pagine. */
-    @page { size: A4; margin: 20mm 28mm 24mm 28mm; }
+    /*
+     * Margini e spaziatura generosi: colonna di testo più stretta, interlinea ampia → più a capo
+     * e più pagine totali (obiettivo fascicolo esteso, confrontabile con moduli A1 lunghi ~100+ pag.).
+     * Valori allineati a page.pdf() in index.ts.
+     */
+    @page { size: A4; margin: 24mm 36mm 28mm 36mm; }
     * { box-sizing: border-box; }
     body {
       font-family: "Times New Roman", Times, serif;
-      font-size: 11pt;
-      line-height: 1.48;
+      font-size: 11.5pt;
+      line-height: 1.66;
       color: #111;
     }
-    .cover { text-align: center; margin-top: 2.2cm; padding: 0 6mm; }
-    .cover h1 { font-size: 16pt; margin-bottom: 0.65rem; }
-    .cover p { margin: 0.35rem 0; }
-    .cover-premessa { text-align: justify; font-size: 10.5pt; margin: 0.85rem 0 1rem; padding: 0 2mm; }
-    .cover-premessa p { margin: 0 0 0.55rem; }
-    table.index { width: 100%; border-collapse: collapse; margin-top: 1.25rem; font-size: 10pt; }
+    .cover { text-align: center; margin-top: 2.6cm; padding: 0 10mm; }
+    .cover h1 { font-size: 16pt; margin-bottom: 0.85rem; line-height: 1.35; }
+    .cover p { margin: 0.5rem 0; line-height: 1.55; }
+    .cover-premessa {
+      text-align: justify;
+      font-size: 10.8pt;
+      margin: 1rem 0 1.15rem;
+      padding: 0 4mm;
+      line-height: 1.62;
+    }
+    .cover-premessa p { margin: 0 0 0.7rem; }
+    table.index { width: 100%; border-collapse: collapse; margin-top: 1.55rem; font-size: 10.5pt; }
     table.index th,
-    table.index td { padding: 0.5rem 0.65rem !important; }
+    table.index td { padding: 0.58rem 0.72rem !important; line-height: 1.45; }
     .page-break { break-before: page; page-break-before: always; }
-    .doc-header { margin-bottom: 1.15rem; padding: 0 4mm; }
-    .h-name { text-align: center; font-weight: 700; font-size: 12pt; margin-bottom: 0.35rem; }
-    .h-address { text-align: center; font-size: 11pt; margin-bottom: 0.75rem; }
+    .doc-section { padding-bottom: 14mm; }
+    .doc-header { margin-bottom: 1.45rem; padding: 0 5mm; }
+    .h-name { text-align: center; font-weight: 700; font-size: 12.5pt; margin-bottom: 0.45rem; line-height: 1.3; }
+    .h-address { text-align: center; font-size: 11.5pt; margin-bottom: 0.9rem; line-height: 1.45; }
     .h-docline {
       border: 1px solid #000;
-      padding: 0.55rem 0.85rem;
+      padding: 0.65rem 0.95rem;
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
+      gap: 0.45rem;
       word-wrap: break-word;
       overflow-wrap: anywhere;
+      line-height: 1.45;
     }
     .h-code { font-weight: 600; }
-    /* Rientri aggiuntivi sul corpo: restringono ulteriormente la colonna di testo. */
     .doc-body {
-      margin: 1rem 0 1.5rem;
-      padding: 0 11mm;
+      margin: 1.15rem 0 1.75rem;
+      padding: 0 15mm;
       text-align: justify;
     }
-    .doc-body h2 { font-size: 11.5pt; margin: 1.15rem 0 0.55rem; font-weight: 700; }
-    .doc-body h3 { font-size: 10.8pt; margin: 0.9rem 0 0.45rem; font-weight: 700; }
-    .doc-body p { margin: 0 0 0.82rem; text-align: justify; }
+    .doc-body h2 { font-size: 12pt; margin: 1.45rem 0 0.65rem; font-weight: 700; line-height: 1.35; }
+    .doc-body h3 { font-size: 11.2pt; margin: 1.05rem 0 0.5rem; font-weight: 700; line-height: 1.35; }
+    .doc-body p { margin: 0 0 1.05rem; text-align: justify; }
     .doc-body ul,
-    .doc-body ol { margin: 0.55rem 0 0.55rem 1.55rem; padding-right: 4mm; }
-    .doc-body li { margin-bottom: 0.35rem; }
-    .doc-body dl { margin: 0.6rem 0 0.6rem 5mm; }
-    .doc-body dt { margin-top: 0.45rem; }
-    .doc-body dd { margin: 0.2rem 0 0.55rem 6mm; }
-    table.data-table { margin: 1rem 0 !important; text-align: left; }
+    .doc-body ol { margin: 0.65rem 0 0.75rem 1.65rem; padding-right: 5mm; }
+    .doc-body li { margin-bottom: 0.45rem; }
+    .doc-body dl { margin: 0.75rem 0 0.75rem 6mm; }
+    .doc-body dt { margin-top: 0.55rem; }
+    .doc-body dd { margin: 0.25rem 0 0.65rem 7mm; }
+    table.data-table { margin: 1.15rem 0 !important; text-align: left; }
     table.data-table th,
-    table.data-table td { padding: 0.45rem 0.6rem !important; }
-    .doc-footer-local { margin-top: 2rem; padding: 0 4mm; font-size: 10pt; }
-    .doc-footer-local p { margin: 0 0 0.55rem; }
+    table.data-table td { padding: 0.52rem 0.68rem !important; line-height: 1.45; }
+    .doc-footer-local { margin-top: 2.85rem; padding: 0 5mm; font-size: 10.5pt; line-height: 1.45; }
+    .doc-footer-local p { margin: 0 0 0.65rem; }
     .muted { color: #444; }
   </style>
 </head>

@@ -92,13 +92,13 @@ app.post("/generate", async (request, reply) => {
       displayHeaderFooter: true,
       headerTemplate: "<div></div>",
       footerTemplate: `
-        <div style="width:100%;font-size:9px;padding:0 18mm;color:#333;font-family:Times New Roman,serif;display:flex;justify-content:space-between;align-items:center;">
+        <div style="width:100%;font-size:9px;padding:0 30mm;color:#333;font-family:Times New Roman,serif;display:flex;justify-content:space-between;align-items:center;">
           <span>${escapeAttr(data.studio.structureName)}</span>
           <span>Pag. <span class="pageNumber"></span> di <span class="totalPages"></span></span>
           <span>${escapeAttr(data.meta.revisionLabel)}</span>
         </div>`,
-      /* Margini ampi: colonna testo più stretta → più a capo e più pagine (obiettivo >100 pag.). */
-      margin: { top: "20mm", bottom: "24mm", left: "28mm", right: "28mm" },
+      /* Allineato a @page in htmlAssembly: margini ampi → colonna stretta, più a capo, fascicolo >100 pag. */
+      margin: { top: "24mm", bottom: "28mm", left: "36mm", right: "36mm" },
     });
 
     return reply
