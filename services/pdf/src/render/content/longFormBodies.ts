@@ -1,7 +1,8 @@
 import type { ResolvedDocument } from "@allegato-a1/shared";
 import { escapeHtml } from "../escape.js";
 import type { BodyContext } from "./contextBuilder.js";
-import { quadroGeneraleAllegatoA1Monopresidio, intestazioneRequisitoSpecifico } from "./normativePreamble.js";
+import { intestazioneRequisitoSpecifico } from "./normativePreamble.js";
+import { customerSatisfactionQuestionnaireBlock } from "./teresi/teresiShared.js";
 
 type TechnicalSpec = {
   label: string;
@@ -15,7 +16,6 @@ type TechnicalSpec = {
 export function technicalComplianceBlock(c: BodyContext, doc: ResolvedDocument, spec: TechnicalSpec): string {
   const { matter, laws, label, generalHtml } = spec;
   return (
-    quadroGeneraleAllegatoA1Monopresidio() +
     intestazioneRequisitoSpecifico(doc.code, label) +
     `<h2>Applicazione alla struttura</h2><p>Le sezioni seguenti si riferiscono a <strong>${c.studioName}</strong>, con sede in <strong>${c.address}</strong>; titolare della struttura <strong>${c.ownerName}</strong> (c.f. / p.iva: <strong>${c.vat}</strong>). Per la monopresidio <strong>non si attribuiscono</strong>, salvo atti pubblici che lo prevedano, figure di “direttore sanitario” o “responsabile tecnico” <em>distinte</em> dal titolare.</p>` +
     `<h2>Parte generale — ${escapeHtml(label)}</h2>` +
@@ -57,7 +57,6 @@ ${c.externalSectionHtml}
 
 export function ionizingLong(c: BodyContext, doc: ResolvedDocument): string {
   return (
-    quadroGeneraleAllegatoA1Monopresidio() +
     intestazioneRequisitoSpecifico(doc.code, "Protezione da radiazioni ionizzanti — non applicabilità") +
     `<h2>Applicazione alla struttura</h2><p>La dichiarazione seguente riguarda <strong>${c.studioName}</strong>, <strong>${c.address}</strong>, titolare <strong>${c.ownerName}</strong>.</p>
 <h2>Parte generale — radioprotezione</h2>
@@ -79,26 +78,17 @@ export function ionizingLong(c: BodyContext, doc: ResolvedDocument): string {
 
 export function gasLong(c: BodyContext, doc: ResolvedDocument): string {
   return (
-    quadroGeneraleAllegatoA1Monopresidio() +
     intestazioneRequisitoSpecifico(doc.code, "Impianti di distribuzione gas medicali — non applicabilità") +
     `<h2>Applicazione alla struttura</h2><p>La dichiarazione seguente riguarda <strong>${c.studioName}</strong>, <strong>${c.address}</strong>, titolare <strong>${c.ownerName}</strong>.</p>
-<h2>Parte generale — gas medicali</h2>
-<p>Gli impianti fissi di distribuzione di gas medicali richiedono in genere <strong>progettazione specialistica</strong>, <strong>collaudo</strong>, <strong>manutenzione programmata</strong>, <strong>allarmi</strong> e formazione del personale. La documentazione tecnica deve essere disponibile agli operatori e al responsabile della manutenzione.</p>
-<p>La normativa sui fluidi medicali e le norme tecniche UNI disciplinano reti, terminali, etichettatura e compatibilità dei materiali; eventuali bombole o sorgenti portatili per usi limitati restano soggette a <strong>regole di stoccaggio e sicurezza</strong> anche in assenza di rete fissa.</p>
-<h2>Situazione dichiarata dalla struttura</h2>
-<p>Per il requisito <strong>${escapeHtml(doc.code)}</strong> la struttura <strong>${c.studioName}</strong> dichiara la <strong>non applicabilità</strong> o l’assenza di impianti centralizzati di distribuzione di gas medicali rispetto alle attività effettivamente svolte.</p>
-${c.openingLine}
-<h2>Descrizione operativa dei locali</h2>
-<p>Nei locali di <strong>${c.address}</strong> non risultano installazioni centralizzate che richiedano la documentazione tipica degli impianti fissi. Qualsiasi futura installazione determinerà l’aggiornamento del fascicolo tecnico e gli adempimenti specialistici previsti.</p>
-<h2>Obblighi residui e impegni</h2>
-<p>Restano salve le norme su stoccaggio, movimentazione e sicurezza dei gas compressi se presenti per finalità strumentali non assimilabili a impianto di distribuzione sanitario. La struttura si impegna a integrare il fascicolo prima dell’introduzione di nuove sorgenti o reti.</p>` +
+<h2>Situazione dichiarata</h2>
+<p>Per il requisito <strong>${escapeHtml(doc.code)}</strong> la struttura dichiara la <strong>non applicabilità</strong> dell’impianto centralizzato di distribuzione di gas medicali rispetto alle attività effettivamente svolte. Restano salve, ove presenti, le norme su stoccaggio e sicurezza di bombole o sorgenti portatili per usi strumentali non assimilabili a rete fissa; ogni futura installazione centralizzata comporterà l’aggiornamento del fascicolo.</p>
+${c.openingLine}` +
     sharedClosing(c)
   );
 }
 
 export function internsLong(c: BodyContext, doc: ResolvedDocument): string {
   return (
-    quadroGeneraleAllegatoA1Monopresidio() +
     intestazioneRequisitoSpecifico(
       doc.code,
       "Identificazione tirocinanti e percorsi formativi — assenza al momento"
@@ -108,7 +98,7 @@ export function internsLong(c: BodyContext, doc: ResolvedDocument): string {
 <p>Il requisito mira a garantire che ogni soggetto che entri nel percorso assistenziale in veste formativa sia <strong>identificabile</strong>, <strong>autorizzato</strong>, <strong>coperto</strong> da assicurazioni e accordi con l’ente di provenienza, e <strong>formato</strong> su privacy, sicurezza e limiti operativi.</p>
 <p>La documentazione tipica include: convenzione o protocollo con università / scuole, <strong>registro presenze</strong>, designazione del <strong>tutor</strong>, estremi anagrafici, limitazioni alle attività cliniche, DPI e vaccinazioni ove richieste.</p>
 <h2>Situazione dichiarata dalla struttura</h2>
-<p>La struttura <strong>${c.studioName}</strong> dichiara che <strong>non ospita al momento tirocinanti o percorsi formativi</strong> che richiedano identificazione e tracciabilità aggiuntiva oltre al personale strutturale elencato nella sezione conclusiva del presente documento.</p>
+<p>La struttura <strong>${c.studioName}</strong> dichiara che <strong>non ospita al momento tirocinanti o percorsi formativi</strong> che richiedano identificazione e tracciabilità aggiuntiva oltre al personale strutturale già censito negli altri documenti dell’Allegato A1.</p>
 ${c.openingLine}
 <h2>Impegni in caso di futuro ingresso di tirocinanti</h2>
 <ul>
@@ -120,55 +110,297 @@ ${c.openingLine}
   );
 }
 
+/** Documento 23 — dichiarazione di non detenzione di materiali esplodenti (studio odontoiatrico). */
+export function explosivesNotApplicableBlock(c: BodyContext, doc: ResolvedDocument): string {
+  return (
+    intestazioneRequisitoSpecifico(doc.code, "Materiali esplodenti — non detenzione") +
+    `<h2>Applicazione alla struttura</h2><p>La dichiarazione seguente riguarda <strong>${c.studioName}</strong>, <strong>${c.address}</strong>, titolare <strong>${c.ownerName}</strong>.</p>` +
+    c.openingLine +
+    `<h2>Situazione dichiarata</h2>
+<p>La struttura dichiara di <strong>non detenere materiali esplodenti</strong> né sostanze assimilabili che richiedano autorizzazioni ex normativa sugli esplosivi, nell’ambito dell’ordinario esercizio professionale. Qualsiasi futura detenzione comporta l’aggiornamento del fascicolo e gli adempimenti di legge.</p>` +
+    sharedClosing(c)
+  );
+}
+
+/** Modello documento 1 allineato al testo del modulo di riferimento (studio Teresi / 12_Mod. ALL. A1). */
 export function doc01Organization(c: BodyContext): string {
   return (
-    quadroGeneraleAllegatoA1Monopresidio() +
     intestazioneRequisitoSpecifico("1A.01.03.01", "Organizzazione e politiche di gestione delle risorse") +
     `
-<h2>Parte I — Finalità, scopi e campo di applicazione</h2>
-<p>Il presente documento definisce, per <strong>${c.studioName}</strong> sita in <strong>${c.address}</strong>, l’organizzazione e le <strong>politiche di gestione delle risorse</strong>, inclusa l’analisi dei processi per individuare le fasi ove possono manifestarsi disservizi (requisito <strong>1A.01.03.01</strong>). La <strong>denominazione della struttura</strong> riportata nei frontespizi deve coincidere <strong>letteralmente</strong> con la ragione sociale ufficiale inserita nel gestionale (nessuna abbreviazione o formula tipo “Resp.” / “Dir. tecnico” se non corrisponde ad atti reali).</p>
-<p>Il <strong>titolare</strong> <strong>${c.ownerName}</strong> (P.IVA / C.F. <strong>${c.vat}</strong>) è il <strong>legale rappresentante e professionista titolare</strong> dell’esercizio, salvo diversa struttura societaria documentata. Per la monopresidio <strong>non si attribuiscono</strong>, salvo atti pubblici che lo prevedano, figure di “direttore sanitario” o “responsabile tecnico” <em>distinte</em> dal titolare.</p>
-${c.openingLine}
+<p>Il presente documento descritto è un <strong>Piano di Organizzazione e Gestione delle Risorse (POG-R)</strong> o un <strong>Piano di Gestione dei Servizi</strong>, che definisce le politiche, i processi e la struttura organizzativa per l’uso efficiente delle risorse e include un’analisi dei processi per identificare i punti deboli e i possibili disservizi di <strong>${c.studioName}</strong>.</p>
+<p>L’obiettivo è garantire un’organizzazione ottimale e prevenire problemi operativi, spesso attraverso l’analisi dei rischi e l’implementazione di procedure di controllo interno.</p>
 
-<h2>Parte II — Funzioni del documento</h2>
+<h2>Funzioni e scopi del documento</h2>
 <ul>
-<li><strong>Organizzazione:</strong> ruoli, responsabilità, interazioni tra titolare, collaboratori e supporto.</li>
-<li><strong>Politiche di gestione:</strong> risorse umane, strumentali, tecnologiche, finanziarie.</li>
-<li><strong>Analisi dei processi:</strong> fasi critiche (accoglienza, prestazioni, sterilizzazione, documentazione, fatturazione).</li>
-<li><strong>Prevenzione disservizi:</strong> misure, formazione, strumenti informatici.</li>
-<li><strong>Controllo e miglioramento:</strong> verifiche, indicatori, riesame.</li>
+<li><strong>Definizione dell’organizzazione:</strong> descrive la struttura organizzativa, i ruoli e le responsabilità per la gestione delle risorse.</li>
+<li><strong>Politiche di gestione:</strong> stabilisce le regole e i principi che guidano l’uso delle risorse (finanziarie, umane e materiali).</li>
+<li><strong>Analisi dei processi:</strong> mappa i processi aziendali per identificare le fasi critiche in cui potrebbero verificarsi disservizi, errori o inefficienze.</li>
+<li><strong>Prevenzione dei disservizi:</strong> individua le criticità e implementa azioni correttive o preventive per mitigare i rischi e garantire la continuità dei servizi.</li>
+<li><strong>Controllo interno:</strong> supporta l’implementazione di un sistema di controllo interno per assicurare la conformità alle procedure e la salvaguardia delle risorse.</li>
+<li><strong>Base documentale:</strong> fornisce una base documentale utilizzabile per la formazione, la revisione e il miglioramento continuo delle operazioni.</li>
 </ul>
 
-<h2>Parte III — Glossario (definizioni operative)</h2>
-<dl style="font-size:10.5pt;">
-  <dt><strong>Disservizio</strong></dt><dd>Evento che riduce qualità o conformità (ritardi, errori, comunicazioni inadeguate, guasti).</dd>
-  <dt><strong>Processo</strong></dt><dd>Attività correlate che trasformano input in output (percorso del paziente).</dd>
-  <dt><strong>Risorsa</strong></dt><dd>Personale, strumenti, software, spazi, tempo, budget.</dd>
-  <dt><strong>Indicatore</strong></dt><dd>Grandezza misurabile per monitorare efficacia/efficienza.</dd>
-  <dt><strong>Titolare</strong></dt><dd>Professionista responsabile dell’esercizio nella struttura monopresidio.</dd>
-</dl>
+<h2>Contenuti tipici</h2>
+<ul>
+<li><strong>Mappatura dei processi:</strong> descrizione dettagliata delle attività e delle interazioni tra le diverse unità organizzative.</li>
+<li><strong>Analisi dei rischi:</strong> identificazione dei rischi associati a ogni fase del processo e valutazione di probabilità e impatto.</li>
+<li><strong>Piani di mitigazione:</strong> misure preventive e correttive per ridurre i rischi.</li>
+<li><strong>Indicatori di performance:</strong> definizione degli indicatori chiave per monitorare efficienza ed efficacia dei processi.</li>
+<li><strong>Procedure operative standard:</strong> istruzioni dettagliate su come svolgere le attività operative.</li>
+</ul>
 
-<h2>Parte IV — Struttura organizzativa e personale</h2>
+<h2>Documento organizzativo e di gestione delle risorse</h2>
+<p><strong>${c.studioName}</strong> — <strong>${c.address}</strong>. Titolare: <strong>${c.ownerName}</strong> (P.IVA / C.F. <strong>${c.vat}</strong>).</p>
+${c.openingLine}
+
+<h2>1. Scopo del documento</h2>
+<p>Il presente documento ha l’obiettivo di definire e rendere esplicita l’organizzazione interna dello studio odontoiatrico e le politiche adottate per la gestione delle risorse (umane, materiali e tecnologiche). Analizza i principali processi operativi per individuare eventuali fasi critiche in cui possono verificarsi disservizi, al fine di prevenirli e garantire un servizio di qualità e in sicurezza per i pazienti.</p>
+
+<h2>2. Struttura organizzativa dello studio</h2>
+<h3>2.1 Personale e ruoli (modello tipico)</h3>
+<ul>
+<li><strong>Responsabile sanitario / titolare:</strong> coordinamento generale, supervisione clinica e gestionale.</li>
+<li><strong>Odontoiatri collaboratori:</strong> esecuzione dei trattamenti e presa in carico dei pazienti.</li>
+<li><strong>Igienisti dentali:</strong> prevenzione, educazione e igiene orale.</li>
+<li><strong>Assistenti alla poltrona (ASO):</strong> supporto clinico e logistico alle attività odontoiatriche.</li>
+<li><strong>Personale amministrativo:</strong> accoglienza, gestione appuntamenti, documentazione, fatturazione.</li>
+</ul>
+<p>Elenco del personale e dei collaboratori dichiarati nel gestionale:</p>
 ${c.staffSectionHtml}
 
-<h2>Parte V — Risorse strumentali e tecnologiche</h2>
+<h3>2.2 Comunicazione interna</h3>
+<ul>
+<li>Riunioni periodiche di coordinamento (mensili o bimestrali).</li>
+<li>Uso di software gestionale per la condivisione di informazioni cliniche e organizzative.</li>
+<li>Canali interni di comunicazione digitale (e-mail, agenda condivisa, ove adottati).</li>
+</ul>
+
+<h2>3. Politiche di gestione delle risorse</h2>
+<h3>3.1 Risorse umane</h3>
+<ul>
+<li>Aggiornamento continuo e formazione obbligatoria (corsi ECM, formazione ASO).</li>
+<li>Affiancamento e formazione on-the-job per nuovo personale.</li>
+<li>Verifica periodica delle competenze e colloqui di feedback.</li>
+</ul>
+<h3>3.2 Risorse materiali e tecnologiche</h3>
+<ul>
+<li>Manutenzione periodica delle attrezzature odontoiatriche secondo calendario prestabilito.</li>
+<li>Controllo di scorte e materiali sanitari (inventario automatico o manuale).</li>
+<li>Adozione di software gestionali aggiornati per appuntamenti, cartelle cliniche e amministrazione.</li>
+</ul>
+<h3>3.3 Sicurezza e igiene</h3>
+<ul>
+<li>Adozione dei protocolli di sterilizzazione e sanificazione secondo normative vigenti.</li>
+<li>Formazione del personale in materia di sicurezza sul lavoro e gestione emergenze.</li>
+<li>Verifica periodica del rispetto delle normative igienico-sanitarie.</li>
+</ul>
+
+<h2>4. Analisi dei processi e delle fasi critiche</h2>
+<p>L’analisi dei principali processi permette di individuare punti di rischio e prevenire i disservizi. Di seguito una tabella riepilogativa:</p>
+<table class="data-table" style="width:100%;border-collapse:collapse;font-size:9.5pt;margin:0.6rem 0;">
+<thead>
+<tr>
+<th style="border:1px solid #333;padding:0.3rem;">Processo</th>
+<th style="border:1px solid #333;padding:0.3rem;">Fase critica</th>
+<th style="border:1px solid #333;padding:0.3rem;">Possibili disservizi</th>
+<th style="border:1px solid #333;padding:0.3rem;">Azioni preventive / correttive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Accoglienza del paziente</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Prenotazione, accettazione</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Errori agenda, attese prolungate</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Software gestionale, promemoria automatici, conferma telefonica</td>
+</tr>
+<tr>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Trattamento clinico</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Diagnosi, esecuzione terapia</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Errori clinici, strumentazione non disponibile</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Check-list, formazione continua, protocolli clinici</td>
+</tr>
+<tr>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Sterilizzazione strumenti</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Pulizia, imbustamento, gestione autoclave</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Contaminazione, malfunzionamento</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Manutenzione periodica, tracciabilità sterilizzazione</td>
+</tr>
+<tr>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Gestione amministrativa</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Fatturazione, archiviazione</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Errori documentali, perdita dati</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Backup, digitalizzazione documenti, formazione amministrativi</td>
+</tr>
+<tr>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Comunicazione con pazienti</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Informazioni pre/post trattamento, follow-up</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Mancanza di informazioni, appuntamenti dimenticati</td>
+<td style="border:1px solid #333;padding:0.3rem;vertical-align:top;">Promemoria SMS/e-mail, materiale informativo standard</td>
+</tr>
+</tbody>
+</table>
+
+<h2>5. Risorse strumentali e tecnologiche (inventario)</h2>
+<p>A titolo esemplificativo, le risorse strumentali tipiche possono includere: unità odontoiatrica, radiografia digitale, scanner intraorale, micromotore, termodisinfettore, autoclave, aspirazione, lampada polimerizzante. L’elenco effettivo dichiarato è il seguente:</p>
 ${c.equipmentSectionHtml}
 
-<h2>Parte VI — Analisi dei processi e mitigazione</h2>
-<p>Mappatura dei processi con identificazione rischi e controlli; azioni preventive su agenda, cartella clinica, sterilizzazione, backup.</p>
+<h2>6. Monitoraggio e miglioramento continuo</h2>
+<p>Lo studio si impegna in un processo continuo di miglioramento della qualità attraverso:</p>
+<ul>
+<li>raccolta del feedback da parte dei pazienti (questionari cartacei o digitali);</li>
+<li>audit interni periodici per la verifica del rispetto delle procedure;</li>
+<li>revisione degli eventi critici, analisi delle cause e implementazione di azioni correttive;</li>
+<li>aggiornamento dei protocolli interni in base alle normative vigenti e ai risultati delle verifiche.</li>
+</ul>
+<p>Riferimento revisione documentale: <strong>${c.revision}</strong>.</p>
 
-<h2>Parte VII — Monitoraggio e revisione documentale</h2>
-<p>Indicatori, reclami, eventi avversi; riesame collegato a <strong>${c.revision}</strong>.</p>
-
-<h2>Parte VIII — Conclusioni</h2>
-<p>Quadro organizzativo e glossario per l’Allegato A1; integrare con procedure dettagliate in studio.</p>
+<h2>7. Conclusioni</h2>
+<p>Una gestione strutturata ed efficiente delle risorse è essenziale per garantire la qualità del servizio odontoiatrico offerto ai pazienti. Il presente documento costituisce una guida pratica per il personale, promuovendo qualità, sicurezza e miglioramento continuo in ogni area dello studio.</p>
 `
+  );
+}
+
+/**
+ * Documento 5 — erogazione dell’assistenza (modello Teresi / 12_Mod. ALL. A1), con tabella mensile disservizi.
+ */
+export function doc05ErogazioneAssistenzaTeresi(c: BodyContext, doc: ResolvedDocument): string {
+  return (
+    intestazioneRequisitoSpecifico(doc.code, doc.title) +
+    `
+<p>La presente procedura ha lo scopo di descrivere in modo chiaro e uniforme le modalità di erogazione dell’assistenza odontoiatrica presso <strong>${c.studioName}</strong>, garantendo qualità, sicurezza del paziente e conformità alle normative vigenti (D.Lgs. 81/08, GDPR, normative sanitarie regionali, linee guida del Ministero della Salute).</p>
+
+<h2>1. Campo di applicazione</h2>
+<p>La procedura si applica a tutte le attività cliniche e assistenziali erogate all’interno dello studio odontoiatrico, comprese:</p>
+<ul>
+<li>visite odontoiatriche e diagnostiche;</li>
+<li>trattamenti terapeutici e chirurgici;</li>
+<li>prestazioni igienico-preventive;</li>
+<li>gestione delle urgenze odontoiatriche.</li>
+</ul>
+
+<h2>2. Riferimenti normativi</h2>
+<ul>
+<li>D.Lgs. 81/2008 – Sicurezza nei luoghi di lavoro;</li>
+<li>Regolamento UE 2016/679 (GDPR) – Protezione dei dati personali;</li>
+<li>linee guida del Ministero della Salute per la sicurezza del paziente odontoiatrico;</li>
+<li>Codice deontologico degli odontoiatri.</li>
+</ul>
+
+<h2>3. Responsabilità</h2>
+<ul>
+<li><strong>Titolare:</strong> supervisione generale del processo assistenziale, esecuzione delle prestazioni cliniche, diagnosi, trattamento, consenso informato, gestione strumenti, disinfezione e sterilizzazione, gestione accettazione, anagrafica, appuntamenti, privacy.</li>
+</ul>
+
+<h2>4. Descrizione della procedura</h2>
+<h3>4.1 Accoglienza e accettazione del paziente</h3>
+<ol>
+<li>Il paziente viene accolto dal titolare dello studio o da eventuale personale amministrativo.</li>
+<li>Vengono registrati i dati anagrafici e acquisiti i consensi informati (privacy e trattamento sanitario).</li>
+<li>Viene fissato o confermato l’appuntamento con l’odontoiatra.</li>
+</ol>
+<h3>4.2 Valutazione clinica e piano di trattamento</h3>
+<ol>
+<li>L’odontoiatra effettua l’anamnesi generale e odontoiatrica.</li>
+<li>Si procede con l’esame del paziente.</li>
+<li>Viene elaborato un piano di trattamento personalizzato, discusso e approvato dal paziente mediante consenso informato scritto.</li>
+</ol>
+<h3>4.3 Erogazione della prestazione odontoiatrica</h3>
+<ol>
+<li>Il titolare verifica pulizia, sterilità e funzionamento delle attrezzature.</li>
+<li>L’odontoiatra esegue la prestazione secondo protocolli clinici e linee guida.</li>
+<li>Durante la seduta vengono rispettate le procedure di sicurezza e prevenzione del rischio biologico (DPI, gestione rifiuti sanitari, disinfezione).</li>
+<li>Al termine, il titolare provvede alla detersione, disinfezione e sterilizzazione degli strumenti utilizzati.</li>
+</ol>
+<h3>4.4 Follow-up e monitoraggio</h3>
+<ol>
+<li>Al termine della prestazione, vengono fornite al paziente le indicazioni post-operatorie o di mantenimento.</li>
+<li>Si pianificano eventuali controlli successivi.</li>
+<li>I dati clinici vengono registrati nella cartella odontoiatrica elettronica o cartacea.</li>
+</ol>
+
+<h2>5. Gestione delle urgenze</h2>
+<p>Le urgenze odontoiatriche vengono gestite con priorità.</p>
+<ol>
+<li>Il paziente viene identificato e valutato rapidamente.</li>
+<li>L’odontoiatra stabilisce la priorità e la tipologia di intervento.</li>
+<li>Dopo la prestazione, viene programmato il follow-up per la risoluzione definitiva.</li>
+</ol>
+
+<h2>6. Sicurezza e igiene</h2>
+<ul>
+<li>Tutti gli ambienti vengono sanificati secondo protocolli giornalieri e tra un paziente e l’altro.</li>
+<li>Gli strumenti vengono sterilizzati in autoclave e tracciati mediante sistema di controllo.</li>
+<li>Vengono rispettati i protocolli di prevenzione del rischio infettivo (HBV, HCV, HIV, COVID-19, ecc.).</li>
+</ul>
+
+<h2>7. Documentazione e registrazioni</h2>
+<p>Le seguenti registrazioni devono essere mantenute:</p>
+<ul>
+<li>schede anagrafiche e cliniche dei pazienti;</li>
+<li>consensi informati;</li>
+<li>registri di sterilizzazione;</li>
+<li>piani di manutenzione apparecchiature;</li>
+<li>registro smaltimento rifiuti sanitari.</li>
+</ul>
+
+<h2>8. Miglioramento continuo</h2>
+<p>Il titolare valuta periodicamente:</p>
+<ul>
+<li>soddisfazione del paziente;</li>
+<li>non conformità e segnalazioni;</li>
+<li>aggiornamenti scientifici e normativi;</li>
+<li>necessità di formazione del personale.</li>
+</ul>
+<p>Eventuali azioni correttive o preventive vengono pianificate e documentate.</p>
+
+<h2>Tabella riepilogativa mensile dei disservizi</h2>
+<p>Mensilmente è prevista la revisione di una tabella riepilogativa contenente i disservizi riscontrati all’interno dello studio odontoiatrico, al fine di effettuare un’analisi statistica degli stessi, finalizzata alla predisposizione di eventuali azioni di indagine e intervento.</p>
+<table class="data-table" style="width:100%;border-collapse:collapse;font-size:9pt;margin:0.6rem 0;">
+<thead>
+<tr>
+<th style="border:1px solid #333;padding:0.28rem;">Descrizione</th>
+<th style="border:1px solid #333;padding:0.28rem;width:12%;">Mese</th>
+<th style="border:1px solid #333;padding:0.28rem;width:10%;">N. eventi</th>
+<th style="border:1px solid #333;padding:0.28rem;width:26%;" colspan="3">Rispetto al mese precedente</th>
+</tr>
+<tr>
+<th style="border:1px solid #333;padding:0.2rem;"></th>
+<th style="border:1px solid #333;padding:0.2rem;"></th>
+<th style="border:1px solid #333;padding:0.2rem;"></th>
+<th style="border:1px solid #333;padding:0.2rem;">Diminuiti</th>
+<th style="border:1px solid #333;padding:0.2rem;">Inalterati</th>
+<th style="border:1px solid #333;padding:0.2rem;">Aumentati</th>
+</tr>
+</thead>
+<tbody>
+${[
+      "Disservizi dovuti a fuori uso attrezzature",
+      "Ritardi erogazione prestazioni dovuti a indisponibilità personale di studio",
+      "Appuntamenti non rispettati da parte del pubblico giustificati",
+      "Appuntamenti non rispettati per insufficiente comunicazione e/o chiarezza da parte della segreteria",
+      "Disservizi dovuti a guasti impianti",
+      "Disservizi dovuti a guasti/indisponibilità sistema informatico",
+    ]
+      .map(
+        (label) => `<tr>
+<td style="border:1px solid #333;padding:0.28rem;vertical-align:top;">${escapeHtml(label)}</td>
+<td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td>
+<td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td>
+<td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td>
+<td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td>
+<td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td>
+</tr>`
+      )
+      .join("")}
+</tbody>
+</table>
+` +
+    sharedClosing(c)
   );
 }
 
 export function doc02PrivacyInfo(c: BodyContext): string {
   return (
-    quadroGeneraleAllegatoA1Monopresidio() +
     intestazioneRequisitoSpecifico("1A.01.04.01", "Documentazione inerente il sistema informativo") +
     `
 <h2>Premessa estesa sul trattamento dei dati e sul sistema informativo</h2>
@@ -177,7 +409,13 @@ export function doc02PrivacyInfo(c: BodyContext): string {
 ${c.openingLine}
 
 <h2>1. Ambito, basi giuridiche e finalità</h2>
-<p>Finalità: diagnosi e cura, gestione amministrativa e contabile, adempimenti di legge, gestione qualità e reclami, tutela in giudizio. I trattamenti avvengono con strumenti elettronici e, ove necessario, cartacei. I diritti degli interessati (accesso, rettifica, cancellazione, limitazione, portabilità, opposizione) sono gestiti con procedure interne e tempi di risposta documentati.</p>
+<p>Finalità: diagnosi e cura, gestione amministrativa e contabile, adempimenti di legge, gestione qualità e reclami, tutela in giudizio. I trattamenti avvengono con strumenti elettronici e, ove necessario, cartacei. Le basi giuridiche includono <strong>esecuzione del contratto</strong> (prestazione sanitaria), <strong>obblighi legali</strong>, <strong>consenso</strong> ove richiesto per finalità specifiche, e <strong>legittimo interesse</strong> proporzionato ove applicabile (es. difesa giudiziaria, sicurezza dei sistemi).</p>
+
+<h2>1.1 Categorie di dati, destinatari e conservazione</h2>
+<p>Sono trattati dati <strong>identificativi</strong>, <strong>contatto</strong>, <strong>sanitari</strong> (cartella clinica, immagini, consensi), <strong>amministrativi e di pagamento</strong> ove presenti. I destinatari possono includere: laboratori, consulenti, compagnie assicurative per sinistri, fornitori di servizi informatici con nomina a responsabile del trattamento o accordi contrattuali equivalenti, autorità quando obbligatorio. I tempi di conservazione rispettano la normativa sanitaria, civilistica e fiscale; i criteri di cancellazione / anonimizzazione sono definiti nella policy interna.</p>
+
+<h2>1.2 Diritti degli interessati e modalità di esercizio</h2>
+<p>Gli interessati possono esercitare i diritti di cui agli artt. 15–22 del GDPR (accesso, rettifica, cancellazione ove applicabile, limitazione, portabilità dei dati forniti contrattualmente, opposizione ove prevista) rivolgendosi al titolare ai recapiti dello studio. È possibile proporre reclamo al Garante per la protezione dei dati personali. Le richieste sono evase nei termini di legge e registrate ove utile alla tracciabilità.</p>
 
 <h2>2. Software applicativi e piattaforme (dati dichiarati nel gestionale)</h2>
 ${c.itProfileSectionHtml}
@@ -200,7 +438,10 @@ ${c.equipmentSectionHtml}
 ${c.staffSectionHtml}
 
 <h2>8. Registro trattamenti, verifiche e revisione</h2>
-<p>Registro delle attività di trattamento, revisione almeno annuale o dopo cambiamenti rilevanti, test di ripristino backup, verifica log. Riferimento revisione documentale: <strong>${c.revision}</strong>.</p>
+<p>Registro delle attività di trattamento, revisione almeno annuale o dopo cambiamenti rilevanti, test di ripristino backup, verifica log. In presenza di trattamenti ad alto rischio può essere necessaria la <strong>valutazione d’impatto (DPIA)</strong> e la <strong>nomina del DPO</strong> ove obbligatoria per legge o linee guida applicabili. Riferimento revisione documentale: <strong>${c.revision}</strong>.</p>
+
+<h2>8.1 Violazioni dei dati personali (data breach)</h2>
+<p>In caso di violazione dei dati personali, il titolare valuta il rischio per gli interessati e, ove richiesto, notifica all’autorità e comunica agli interessati secondo il GDPR. Sono documentate le cause, le misure correttive e le lezioni apprese per ridurre il rischio di recidiva.</p>
 
 <h2>9. Conclusioni</h2>
 <p>Documentazione di sistema informativo in adempimento a 1A.01.04.01; DPIA, nomina DPO o consulenza privacy specialistica se dovuti restano allegati.</p>
@@ -211,7 +452,6 @@ ${c.staffSectionHtml}
 /** Intestazione lunga (quadro A1 + codice + ancoraggio alla struttura) per documenti 25–32. */
 function leadArticulatedDoc(c: BodyContext, code: string, titleShort: string): string {
   return (
-    quadroGeneraleAllegatoA1Monopresidio() +
     intestazioneRequisitoSpecifico(code, titleShort) +
     `<h2>Applicazione alla struttura</h2><p>Le sezioni seguenti si riferiscono a <strong>${c.studioName}</strong>, con sede in <strong>${c.address}</strong>; titolare della struttura <strong>${c.ownerName}</strong>.</p>` +
     c.openingLine
@@ -221,7 +461,8 @@ function leadArticulatedDoc(c: BodyContext, code: string, titleShort: string): s
 export function doc03to07Block(
   c: BodyContext,
   doc: ResolvedDocument,
-  sections: { h: string; p: string[] }[]
+  sections: { h: string; p: string[] }[],
+  options?: { appendBeforeClosing?: string }
 ): string {
   const body = sections
     .map(
@@ -229,21 +470,18 @@ export function doc03to07Block(
         `<h2>${escapeHtml(s.h)}</h2>${s.p.map((x) => `<p>${x}</p>`).join("")}`
     )
     .join("");
+  const beforeClose = options?.appendBeforeClosing ?? "";
   return (
-    quadroGeneraleAllegatoA1Monopresidio() +
     intestazioneRequisitoSpecifico(doc.code, doc.title) +
     `<h2>Applicazione alla struttura</h2><p>Le sezioni seguenti si riferiscono a <strong>${c.studioName}</strong>, <strong>${c.address}</strong>, titolare <strong>${c.ownerName}</strong>.</p>` +
     body +
+    beforeClose +
     sharedClosing(c)
   );
 }
 
 function sharedClosing(c: BodyContext): string {
-  return `
-<h2>Sezione conclusiva e impegni</h2>
-<p>La struttura si impegna a mantenere aggiornato il presente documento in caso di mutamenti organizzativi, normativi o tecnologici. Revisione di riferimento: <strong>${c.revision}</strong>.</p>
-${c.staffSectionHtml}
-${c.premisesSectionHtml}`;
+  return `<p>Revisione documentale di riferimento: <strong>${c.revision}</strong>.</p>`;
 }
 
 /** Fallback se l’ordine documento non è mappato (non dovrebbe accadere per 13–24). */
@@ -273,9 +511,8 @@ const TECH_SPECS: Record<number, TechnicalSpec> = {
     matter: "protezione antincendio",
     laws: "D.P.R. 151/2011 e norme tecniche di prevenzione incendi, schede della attività e prescrizioni dei VVF ove applicabili, D.Lgs. 81/2008",
     generalHtml: `
-<p>La sicurezza antincendio si fonda su <strong>prevenzione</strong> (misure passive e attive), <strong>gestione delle emergenze</strong> (estintori, vie di esodo, segnaletica) e <strong>manutenzione</strong> periodica delle dotazioni. La tipologia di rischio dipende da attività, superfici, presenza di sostanze combustibili e carico termico.</p>
-<p>La documentazione attesa include, ove applicabile: <strong>SCIA / autorizzazione o nulla osta</strong> ai sensi del Codice, <strong>relazioni di conformità</strong>, <strong>libretti di manutenzione estintori</strong> e impianti, <strong>planimetrie con vie di esodo</strong>, addestramento del personale su uso estintori e procedure di evacuazione.</p>
-<p>Per strutture semplici restano comunque validi gli obblighi di <strong>adeguatezza e conservazione</strong> delle dotazioni e di aggiornamento dopo interventi edili rilevanti.</p>
+<p>La struttura mantiene in sede la documentazione richiesta dalla normativa di prevenzione incendi per la tipologia di attività svolta (schede, planimetrie con vie di esodo ove richieste, dotazioni estintive, adempimenti verso i Vigili del Fuoco ove applicabili).</p>
+<p>Per la <strong>manutenzione ordinaria e straordinaria dei presidi antincendio</strong> si fa riferimento al D.M. 3 luglio 2021 e s.m.i.; l’estremo della ditta manutentore, se dichiarato nel modulo, è riportato nel paragrafo sulle attrezzature del presente documento tecnico.</p>
 `,
   },
   15: {
@@ -322,20 +559,15 @@ const TECH_SPECS: Record<number, TechnicalSpec> = {
     label: "Eliminazione barriere architettoniche",
     matter: "eliminazione delle barriere architettoniche",
     laws: "D.P.R. 503/1996 e aggiornamenti, norme tecniche per l’accessibilità, regolamenti edilizi regionali",
-    generalHtml: `
-<p>Il requisito si sovrappone parzialmente all’accessibilità generale ma con focus su <strong>superamento delle barriere</strong> (pendenze, servizi igienici, maniglie, segnaletica tattile ove previsto, parcheggi). La documentazione attesta il rispetto dei <strong>criteri dimensionali e funzionali</strong> applicabili all’edificio.</p>
-<p>Utile conservare: <strong>relazioni di asseverazione</strong>, <strong>planimetrie con quote</strong>, <strong>fotografie</strong> a supporto, <strong>certificazioni di agibilità o titoli edilizi</strong> che recepiscono prescrizioni di accessibilità.</p>
-<p>In caso di unità immobiliari in contesti vincolati, indicare eventuali <strong>deroghe motivate</strong> e misure compensative documentate.</p>
-`,
+    generalHtml: "",
   },
   20: {
     label: "Smaltimento rifiuti",
     matter: "smaltimento dei rifiuti",
     laws: "D.Lgs. 152/2006 in materia di rifiuti sanitari, contratti con centri autorizzati, registri di carico e scarico",
     generalHtml: `
-<p>I rifiuti sanitari richiedono <strong>classificazione corretta</strong> (urbani, assimilati, speciali, pericolosi), <strong>stoccaggio temporaneo</strong> in locali o contenitori idonei, <strong>trasporto</strong> tramite operatori autorizzati e <strong>tracciabilità</strong> tramite formulari o registri.</p>
-<p>La documentazione include: <strong>contratti</strong> con centri di smaltimento / intermediari, <strong>autorizzazioni</strong> al trasporto ove in house, <strong>formazione del personale</strong> su segregazione e DPI, <strong>procedure</strong> per fuoriuscite o emergenze.</p>
-<p>Per la monopresidio è centrale dimostrare <strong>coerenza tra quanto prodotto</strong> (tipologie di prestazione) e <strong>contratti effettivi</strong>, con aggiornamento quando cambia il gestore.</p>
+<p>La struttura ha stipulato contratto per lo smaltimento dei rifiuti sanitari con il centro autorizzato <strong>SICURAD s.r.l.</strong>, con contratto e formulari di tracciabilità conservati in sede e disponibili per il GdV.</p>
+<p>I rifiuti sono classificati e segregati secondo il D.Lgs. 152/2006; il personale è formato su procedure, DPI e registrazione dei conferimenti. Ogni variazione del gestore comporta l’aggiornamento del fascicolo.</p>
 `,
   },
   21: {
@@ -362,25 +594,32 @@ const TECH_SPECS: Record<number, TechnicalSpec> = {
     label: "Materiali esplodenti",
     matter: "materiali esplodenti",
     laws: "normativa sulla detenzione di esplosivi e sostanze pericolose; in caso di assenza totale, la struttura dichiara la non detenzione",
-    generalHtml: `
-<p>Le strutture odontoiatriche di norma <strong>non detengono esplosivi</strong>; il requisito richiede comunque <strong>esplicitazione</strong> della non detenzione o, se presenti sostanze particolari, documentazione su autorizzazioni e sicurezza.</p>
-<p>La parte generale chiarisce che ogni <strong>detenzione anomala</strong> rispetto all’ordinario esercizio professionale deve essere trattata con normativa specifica (magazzinaggio, ADR, ecc.).</p>
-<p>Il documento strutturale consente al GdV di verificare <strong>coerenza dichiarativa</strong> con l’attività effettiva.</p>
-`,
+    generalHtml: ``,
   },
   24: {
     label: "Protezione antisismica",
     matter: "protezione antisismica",
     laws: "Norme Tecniche per le Costruzioni e normativa sismica vigente, documentazione statica ove richiesta per la tipologia edilizia",
     generalHtml: `
-<p>La sicurezza sismica riguarda la <strong>resistenza strutturale dell’edificio</strong> e, per interventi di rilevante entità, la documentazione progettuale e asseverativa. Per esercizi in immobili consolidati, il fascicolo può includere <strong>certificazioni storiche</strong>, <strong>agibilità</strong>, <strong>relazioni statiche</strong> o dichiarazioni di conformità urbanistico-edilizia.</p>
+<p>La sicurezza sismica riguarda la <strong>resistenza strutturale dell’edificio</strong> e, per interventi di rilevante entità, la documentazione progettuale e asseverativa. Per esercizi in immobili consolidati, il fascicolo può includere <strong>certificazioni storiche</strong>, <strong>certificato di agibilità</strong> o titoli edilizi, <strong>relazioni statiche</strong> o dichiarazioni di conformità urbanistico-edilizia.</p>
 <p>Per interventi edilizi recenti possono essere richiesti <strong>collaudi</strong>, <strong>prove su materiali</strong> e aggiornamenti alle NTC vigenti al momento dell’intervento.</p>
-<p>La struttura sanitaria deve dimostrare di operare in <strong>edificio legittimato</strong> e, ove applicabile, di aver recepito prescrizioni post-sisma o di vulnerabilità.</p>
+<p>La struttura sanitaria deve dimostrare di operare in <strong>edificio legittimato</strong> e, ove applicabile, di aver recepito prescrizioni post-sisma o di vulnerabilità. Il <strong>certificato di agibilità</strong> e la documentazione antisismica pertinente sono conservati in sede per la consultazione del GdV.</p>
 `,
   },
 };
 
 export function buildTechnicalForOrder(c: BodyContext, doc: ResolvedDocument): string {
+  if (doc.order === 19) {
+    const base = TECH_SPECS[19];
+    const spec: TechnicalSpec = {
+      ...base,
+      generalHtml: `
+<p>Il requisito attesta il superamento delle barriere architettoniche nei locali di <strong>${c.studioName}</strong> (sede <strong>${c.address}</strong>) secondo i criteri applicabili (D.P.R. 503/1996 e s.m.i., regolamenti edilizi regionali, norme tecniche per l’accessibilità). Planimetrie con quote, relazioni di asseverazione, certificato di agibilità e titoli edilizi aggiornati sono conservati in sede per la consultazione del GdV.</p>
+<p>Ove sussistano vincoli o deroghe motivate, la documentazione ne riporta le motivazioni e le misure compensative adottate.</p>
+`,
+    };
+    return technicalComplianceBlock(c, doc, spec);
+  }
   const spec = TECH_SPECS[doc.order];
   if (!spec) return "";
   return technicalComplianceBlock(c, doc, spec);
@@ -413,6 +652,10 @@ export function doc26ServiceCharter(c: BodyContext): string {
 <p>Per le strutture monopresidio la carta può essere sintetica ma deve essere <strong>effettivamente disponibile</strong> in sede (es. esposizione in sala d’attesa, fascicolo informativo, sito o QR) e <strong>allineata</strong> alle procedure interne realmente applicate.</p>
 <h2>Prestazioni, organizzazione e comunicazione al pubblico</h2>
 <p><strong>${c.studioName}</strong> eroga prestazioni sanitarie ambulatoriali coerenti con le competenze professionali del titolare e con la classificazione della struttura. Le informazioni sono rese disponibili in sala d’attesa e su supporti digitali ove adottati; eventuali <strong>limitazioni</strong> (es. urgenze, specialistica non erogata) sono dichiarate in modo chiaro.</p>
+<h2>Orari, accesso e tempi</h2>
+<p>Sono indicati gli <strong>orari di apertura al pubblico</strong>, le modalità di <strong>prenotazione</strong> (telefono, sportello, digitale), le politiche per le <strong>disdette</strong> e, ove realisticamente stimabili, i <strong>tempi di attesa</strong> o le priorità per le urgenze. Le variazioni stagionali o straordinarie sono comunicate con mezzi idonei (avviso in sede, sito, segreteria).</p>
+<h2>Tariffe, trasparenza economica e diritti del paziente</h2>
+<p>Le informazioni su <strong>onorari</strong>, eventuali <strong>acconti</strong>, <strong>modalità di pagamento</strong> e <strong>note informative</strong> su prestazioni complesse sono rese in modo comprensibile prima o al momento della prestazione, nel rispetto della deontologia e della normativa applicabile.</p>
 <h2>Reclami, miglioramento e revisione</h2>
 <p>I reclami sono gestiti secondo la procedura dedicata (requisito <strong>1A.01.06.01</strong>); la carta è aggiornata a seguito di modifiche organizzative, tariffarie o di offerta assistenziale. La revisione documentale di riferimento è <strong>${c.revision}</strong>.</p>
 ` +
@@ -446,6 +689,7 @@ export function doc28ReportCsat(c: BodyContext): string {
 </table>
 <h2>Riesame e revisione documentale</h2>
 <p>I report sono sottoposti a <strong>riesame</strong> almeno annuale o dopo eventi significativi. Riferimento revisione: <strong>${c.revision}</strong>.</p>
+${customerSatisfactionQuestionnaireBlock()}
 ` +
     sharedClosing(c)
   );
@@ -469,6 +713,8 @@ export function doc29RiskPlan(c: BodyContext): string {
 </ul>
 <h2>Riesame e aggiornamento</h2>
 <p>Revisione almeno <strong>annuale</strong> o dopo eventi significativi, sinistri, ispezioni o introdotte nuove tecnologie. Revisione documentale: <strong>${c.revision}</strong>.</p>
+<h2>Documentazione correlata (DVR e allegati)</h2>
+<p>Il presente piano si integra con il <strong>Documento di valutazione dei rischi</strong> (DVR) ai sensi del D.Lgs. 81/2008 e con le valutazioni specifiche (chimico, biologico, rumore, radiazioni ove presenti). Le <strong>schede dettagliate</strong>, le <strong>matrici di rischio complete</strong> e gli <strong>allegati fotografici o planimetrici</strong> restano acquisiti nel fascicolo aziendale cartaceo o digitale e sono messi a disposizione del GdV su richiesta.</p>
 ` +
     sharedClosing(c)
   );
@@ -487,6 +733,20 @@ export function doc30Cleaning(c: BodyContext): string {
 <p>Prodotti <strong>idonei all’uso</strong> previsto, <strong>schede di sicurezza</strong> disponibili, diluizioni corrette, stoccaggio sicuro; formazione del personale su rischi e etichettatura.</p>
 <h2>Verifiche, registrazioni e revisione</h2>
 <p>Checklist o registri ove applicabile; integrazione con piano rischi. Revisione documentale: <strong>${c.revision}</strong>.</p>
+<h2>Schema tipo — piano pulizia per ambiente (da adattare)</h2>
+<table class="data-table" style="width:100%;border-collapse:collapse;font-size:9pt;margin:0.6rem 0;">
+<thead><tr>
+<th style="border:1px solid #333;padding:0.25rem;">Ambiente / locale</th>
+<th style="border:1px solid #333;padding:0.25rem;">Frequenza</th>
+<th style="border:1px solid #333;padding:0.25rem;">Metodo / prodotto (classe)</th>
+<th style="border:1px solid #333;padding:0.25rem;">Responsabile</th>
+</tr></thead>
+<tbody>
+<tr><td style="border:1px solid #333;padding:0.25rem;">Sala trattamento 1</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td></tr>
+<tr><td style="border:1px solid #333;padding:0.25rem;">Sterilizzazione</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td></tr>
+<tr><td style="border:1px solid #333;padding:0.25rem;">Sala d’attesa / segreteria</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td></tr>
+</tbody>
+</table>
 ` +
     sharedClosing(c)
   );
@@ -508,6 +768,8 @@ export function doc31Biological(c: BodyContext): string {
 </ol>
 <h2>Kit, DPI e disponibilità</h2>
 <p>Disponibilità di <strong>DPI</strong> (guanti, mascherine, occhiali, camici), contenitori per materiali taglienti, disinfettanti; verifica periodica delle scorte.</p>
+<h2>Vaccinazioni e sorveglianza sanitaria</h2>
+<p>Le vaccinazioni e la sorveglianza sanitaria del personale seguono il parere del <strong>medico competente</strong> e le indicazioni nazionali/regionali per i lavoratori esposti a rischio biologico. Le attestazioni di idoneità o le prescrizioni sono conservate nel fascicolo del personale secondo la normativa sulla privacy e sul lavoro.</p>
 <h2>Revisione</h2>
 <p>Aggiornamento dopo infortuni, nuove sostanze o cambi organizzativi. Riferimento: <strong>${c.revision}</strong>.</p>
 ` +
@@ -531,6 +793,8 @@ export function doc32NearMiss(c: BodyContext): string {
 <p><strong>Raccolta</strong> (canale riservato al personale) → <strong>analisi delle cause</strong> (anche contributi umani e organizzativi) → <strong>azioni correttive / preventive</strong> → <strong>monitoraggio dell’efficacia</strong> → <strong>report al titolare</strong> con sintesi in sede di riesame.</p>
 <h2>Integrazione con altri processi</h2>
 <p>Allineamento con il <strong>piano rischi</strong> (1A.06.02.01), <strong>gestione reclami</strong> (1A.01.06.01), <strong>report criticità</strong> (1A.05.03.05) e formazione periodica. Revisione: <strong>${c.revision}</strong>.</p>
+<h2>Registro eventi (modello cartaceo / gestionale)</h2>
+<p>Si consiglia di tenere un <strong>registro strutturato</strong> (data, descrizione sintetica, classificazione near miss / avverso / sentinella, azioni immediate, analisi cause, azioni correttive, responsabile, stato) con accesso riservato al titolare e al personale autorizzato, nel rispetto della privacy. Le copie cartacee o gli export digitali sono conservati per i tempi definiti dalla policy interna.</p>
 ` +
     sharedClosing(c)
   );

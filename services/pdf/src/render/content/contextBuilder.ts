@@ -23,7 +23,7 @@ export type BodyContext = {
 
 function peopleList(title: string, rows: { name: string; role?: string }[]): string {
   if (rows.length === 0) {
-    return `<p><em>Nessun profilo dichiarato per la voce «${escapeHtml(title)}»; la struttura può operare esclusivamente con il titolare o integrare in seguito.</em></p>`;
+    return "";
   }
   const li = rows
     .map(
@@ -46,6 +46,7 @@ export function buildBodyContext(data: AllegatoFormData): BodyContext {
   const staffSectionHtml = [
     peopleList("Segreteria e accoglienza amministrativa", data.staff.secretarial),
     peopleList("Assistenti di studio odontoiatrico (ASO) e affini", data.staff.aso),
+    peopleList("Collaboratori (ortodontisti)", data.staff.orthodontists),
     peopleList("Addetti alle pulizie e sanificazione ambienti", data.staff.cleaning),
   ].join("");
 
@@ -80,7 +81,7 @@ export function buildBodyContext(data: AllegatoFormData): BodyContext {
   premisesBits.push(`sala d’attesa: <strong>${pr.hasWaitingRoom ? "sì" : "no"}</strong>`);
   if (pr.bathroomCount != null) premisesBits.push(`servizi igienici: <strong>${pr.bathroomCount}</strong>`);
   premisesBits.push(`area/locale dedicato alla sterilizzazione: <strong>${pr.hasSterilizationRoom ? "sì" : "no"}</strong>`);
-  const premisesSectionHtml = `<p>${premisesBits.join("; ")}.</p>${pr.notes?.trim() ? `<p>Note sui locali: ${escapeHtml(pr.notes.trim())}</p>` : ""}`;
+  const premisesSectionHtml = `<p>${premisesBits.join("; ")}.</p>`;
 
   const ex = data.external;
   const extLines: string[] = [];

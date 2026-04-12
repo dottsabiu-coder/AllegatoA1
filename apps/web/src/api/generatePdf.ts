@@ -13,6 +13,7 @@ function sanitizePayload(data: AllegatoFormData): AllegatoFormData {
     staff: {
       secretarial: people(data.staff.secretarial),
       aso: people(data.staff.aso),
+      orthodontists: people(data.staff.orthodontists),
       cleaning: people(data.staff.cleaning),
     },
     equipment: {

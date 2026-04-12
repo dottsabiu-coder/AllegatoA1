@@ -1,4 +1,5 @@
 import type { AllegatoFormData, ResolvedDocument } from "@allegato-a1/shared";
+import { indexCoverPremessaModuloRegionale } from "./content/normativePreamble.js";
 import { escapeHtml } from "./escape.js";
 import { sectionBody } from "./boilerplate.js";
 
@@ -19,9 +20,8 @@ export function buildAllegatoHtml(docs: ResolvedDocument[], data: AllegatoFormDa
     .map(
       (d) => `
       <tr>
-        <td style="padding:0.35rem 0.5rem;border:1px solid #333;">${d.order}</td>
-        <td style="padding:0.35rem 0.5rem;border:1px solid #333;">${escapeHtml(d.code)}</td>
-        <td style="padding:0.35rem 0.5rem;border:1px solid #333;">${escapeHtml(d.title)}</td>
+        <td style="padding:0.35rem 0.5rem;border:1px solid #333;text-align:left;">${d.order}. ${escapeHtml(d.title)}</td>
+        <td style="padding:0.35rem 0.5rem;border:1px solid #333;white-space:nowrap;vertical-align:top;">${escapeHtml(d.code)}</td>
       </tr>`
     )
     .join("");
@@ -67,6 +67,8 @@ export function buildAllegatoHtml(docs: ResolvedDocument[], data: AllegatoFormDa
     .cover { text-align: center; margin-top: 2.2cm; padding: 0 6mm; }
     .cover h1 { font-size: 16pt; margin-bottom: 0.65rem; }
     .cover p { margin: 0.35rem 0; }
+    .cover-premessa { text-align: justify; font-size: 10.5pt; margin: 0.85rem 0 1rem; padding: 0 2mm; }
+    .cover-premessa p { margin: 0 0 0.55rem; }
     table.index { width: 100%; border-collapse: collapse; margin-top: 1.25rem; font-size: 10pt; }
     table.index th,
     table.index td { padding: 0.5rem 0.65rem !important; }
@@ -109,16 +111,16 @@ export function buildAllegatoHtml(docs: ResolvedDocument[], data: AllegatoFormDa
 </head>
 <body>
   <section class="cover">
-    <h1>Allegato A1 — Indice documentazione</h1>
+    <h1>Allegato A1 — Indice della documentazione</h1>
+    <div class="cover-premessa">${indexCoverPremessaModuloRegionale()}</div>
     <p><strong>${structure}</strong></p>
     <p>${address}</p>
     <p class="muted">Generazione: ${escapeHtml(dateStr)} — ${revision}</p>
     <table class="index" aria-label="Indice documenti">
       <thead>
         <tr>
-          <th style="text-align:left;border:1px solid #333;padding:0.35rem;">N.</th>
-          <th style="text-align:left;border:1px solid #333;padding:0.35rem;">Codice</th>
-          <th style="text-align:left;border:1px solid #333;padding:0.35rem;">Titolo</th>
+          <th style="text-align:left;border:1px solid #333;padding:0.35rem;width:82%;">Documento</th>
+          <th style="text-align:left;border:1px solid #333;padding:0.35rem;">Cod. Requisito</th>
         </tr>
       </thead>
       <tbody>${indexRows}</tbody>

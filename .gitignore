@@ -1,6 +1,12 @@
 # PDF solo in locale — non su GitHub
 docs/normativa/*.pdf
 
+# Modulo di riferimento Teresi / copie locali ALL. A1 (non versionare)
+*12_Mod*ALL*A1*.pdf
+*12_Mod*.ALL*.A1*.pdf
+*Teresi*.pdf
+**/Teresi/**/*.pdf
+
 # (opzionale, per quando avrai il codice Node)
 node_modules/
 dist/

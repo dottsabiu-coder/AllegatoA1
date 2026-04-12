@@ -6,6 +6,7 @@ import {
   doc01Organization,
   doc02PrivacyInfo,
   doc03to07Block,
+  doc05ErogazioneAssistenzaTeresi,
   doc25Insurance,
   doc26ServiceCharter,
   doc28ReportCsat,
@@ -13,6 +14,7 @@ import {
   doc30Cleaning,
   doc31Biological,
   doc32NearMiss,
+  explosivesNotApplicableBlock,
   gasLong,
   internsLong,
   ionizingLong,
@@ -24,7 +26,6 @@ import {
   disserviziProcessTableBlock,
   pianoEmergenzeEstesoBlock,
   protocolloIsolamentoEstesoBlock,
-  riferimentiNormativiErogazioneAssistenza,
 } from "./blocksForms.js";
 
 function doc08ClinicalDocs(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocument): string {
@@ -69,12 +70,12 @@ function doc08ClinicalDocs(c: ReturnType<typeof buildBodyContext>, doc: Resolved
         ],
       },
       {
-        h: "7. Collegamento al sistema informativo e alle attrezzature",
+        h: "7. Referti esterni, imaging e corrispondenza clinica",
         p: [
-          "Le apparecchiature che producono output clinico (radiografia digitale, scanner, software di pianificazione) devono essere riconducibili in cartella; di seguito l’inventario dichiarato a supporto della tracciabilità strumentale:",
+          "Referti di laboratorio, imaging diagnostico e corrispondenza con altri professionisti sono conservati in modo ordinato e associati al percorso del paziente, con possibilità di recupero tempestivo in sede di visita o contenzioso.",
         ],
       },
-    ]) + c.equipmentSectionHtml
+    ])
   );
 }
 
@@ -103,6 +104,12 @@ function doc09MaintenanceCharge(c: ReturnType<typeof buildBodyContext>, doc: Res
       h: "4. Verifiche, registri e aggiornamento",
       p: [
         `Il responsabile coordina le verifiche documentali in vista delle visite del GdV e aggiorna il fascicolo dopo sostituzioni di apparecchiature o modifiche impiantistiche. Riferimento revisione documentale: <strong>${c.revision}</strong>.`,
+      ],
+    },
+    {
+      h: "5. Registro interventi e contratti",
+      p: [
+        "È tenuto un registro o archivio contrattuale degli interventi di manutenzione con date, esiti e firme o rapportini, consultabile in sede di verifica.",
       ],
     },
   ]);
@@ -142,6 +149,12 @@ function doc10Inventory(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDoc
           "Di seguito l’estratto generato dai dati inseriti nel modulo:",
         ],
       },
+      {
+        h: "6. Verifica annuale e responsabilità",
+        p: [
+          "Almeno una volta all’anno (o con frequenza maggiore se imposta da norma o contratto) il titolare o il responsabile designato verifica la congruenza tra inventario effettivo e registri, annotando data e esito della verifica.",
+        ],
+      },
     ]) + c.equipmentSectionHtml
   );
 }
@@ -179,6 +192,12 @@ function doc11MaintenancePlan(c: ReturnType<typeof buildBodyContext>, doc: Resol
           "Tabella aggiornata dal gestionale:",
         ],
       },
+      {
+        h: "6. Collegamento con la figura di responsabilità manutentiva",
+        p: [
+          "Il piano è coordinato con il documento sull’incarico di manutenzione (requisito collegato): stesso soggetto o interfaccia definita tra titolare, interni ed esterni.",
+        ],
+      },
     ]) + c.equipmentSectionHtml
   );
 }
@@ -210,12 +229,21 @@ function doc12TechSheets(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDo
           "L’elenco seguente consente di verificare la coerenza tra beni presenti e documentazione richiesta:",
         ],
       },
+      {
+        h: "5. Recall, field safety notices e aggiornamenti firmware",
+        p: [
+          "Per apparecchiature regolate come dispositivi medici o assimilabili, si conservano le comunicazioni del fabbricante su recall, correttivi e aggiornamenti software rilevanti per la sicurezza, con evidenza delle azioni intraprese.",
+        ],
+      },
     ]) + c.equipmentSectionHtml
   );
 }
 
 function doc03Quality(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocument): string {
-  return doc03to07Block(c, doc, [
+  return doc03to07Block(
+    c,
+    doc,
+    [
     {
       h: "1. Programma di valutazione e miglioramento",
       p: [
@@ -246,93 +274,127 @@ function doc03Quality(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocum
         "Il titolare riesamina almeno annualmente gli obiettivi di qualità e approva piani di miglioramento. Il programma si integra con reclami (1A.01.06.01), carta dei servizi (1A.05.03.01) e report su criticità (1A.05.03.05).",
       ],
     },
-  ]);
+  ],
+    { appendBeforeClosing: disserviziProcessTableBlock(c) }
+  );
 }
 
 function doc04Complaints(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocument): string {
-  return (
-    doc03to07Block(c, doc, [
+  return doc03to07Block(
+    c,
+    doc,
+    [
     {
-      h: "1. Ambito",
+      h: "1. Ambito e finalità (modello esteso)",
       p: [
-        "La procedura regola presentazione, registrazione, analisi e risposta a reclami, osservazioni e suggerimenti, garantendo tempi congrui e tracciabilità.",
+        `La procedura disciplina la gestione di <strong>reclami, osservazioni e suggerimenti</strong> relativi alle prestazioni e ai servizi di <strong>${c.studioName}</strong>, garantendo <strong>tempi congrui</strong>, <strong>tracciabilità</strong> e <strong>riservatezza</strong>, in coerenza con la carta dei servizi e con gli obblighi deontologici e privacy.`,
+        "Ogni segnalazione costituisce opportunità di <strong>miglioramento continuo</strong> ed è registrata con protocollo progressivo.",
       ],
     },
     {
-      h: "2. Canali e tempi",
+      h: "2. Canali di presentazione",
       p: [
-        "Sportello fisico, posta elettronica e moduli cartacei/digitali. Risposta motivata nei termini previsti dalla normativa di settore e dalla carta dei servizi.",
+        "Sportello in sede, posta ordinaria, e-mail / PEC ove attivata, moduli cartacei in sala d’attesa. Per le richieste scritte è utile indicare recapito per la risposta.",
       ],
     },
     {
-      h: "3. Segreto e conservazione",
+      h: "3. Registrazione, classificazione e tempi di risposta",
       p: [
-        "I dati sono trattati nel rispetto della privacy; gli atti sono conservati per il periodo necessario alle verifiche e alle eventuali controversie.",
+        "Alla ricezione si attribuisce un <strong>numero di protocollo</strong>, si classifica la segnalazione (organizzativa, clinica, amministrativa, privacy, altro) e si avvia l’istruttoria interna. La risposta motivata è fornita nei termini compatibili con la complessità del caso e con quanto comunicato nella carta dei servizi.",
       ],
     },
-  ]) +
-    complaintIntakeFormBlock()
+    {
+      h: "4. Segreto, conservazione e trattamento dati",
+      p: [
+        "I dati personali contenuti nelle segnalazioni sono trattati secondo il Regolamento (UE) 2016/679 e normativa applicabile; la documentazione è conservata per il tempo necessario alle verifiche, al miglioramento della qualità e alla tutela in sede contenziosa ove pertinente.",
+      ],
+    },
+  ],
+    { appendBeforeClosing: complaintIntakeFormBlock() }
   );
 }
 
 function doc05CareDelivery(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocument): string {
-  return (
-    doc03to07Block(c, doc, [
-    {
-      h: "1. Percorso assistenziale",
-      p: [
-        `Il documento descrive le modalità di erogazione dell’assistenza in <strong>${c.studioName}</strong>: accoglienza, informazioni al paziente, consenso informato, erogazione delle prestazioni, dimissione e follow-up.`,
-      ],
-    },
-    {
-      h: "2. Continuità e sicurezza",
-      p: [
-        "Coordinamento tra professionisti, gestione delle urgenze intra-moenia, rinvio alle strutture ospedaliere ove necessario.",
-      ],
-    },
-  ]) +
-    riferimentiNormativiErogazioneAssistenza() +
-    disserviziProcessTableBlock(c)
-  );
+  return doc05ErogazioneAssistenzaTeresi(c, doc);
 }
 
 function doc06Emergency(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocument): string {
-  return (
-    doc03to07Block(c, doc, [
+  return doc03to07Block(
+    c,
+    doc,
+    [
     {
-      h: "1. Piano emergenze",
+      h: "1. Finalità e campo di applicazione",
       p: [
-        "Definizione di scenari (sincope, sanguinamento, arresto cardiaco, incidente strumentale), numeri di emergenza, ruoli, dotazioni di primo soccorso e percorsi di evacuazione.",
+        `Il piano definisce comportamenti, responsabilità e dotazioni per le <strong>emergenze intra moenia</strong> durante l’orario di apertura di <strong>${c.studioName}</strong>, in assenza di continuità assistenziale ospedaliera in loco, in adempimento al requisito <strong>${escapeHtml(doc.code)}</strong>.`,
       ],
     },
     {
-      h: "2. Formazione e simulazioni",
+      h: "2. Ruoli e coordinamento",
       p: [
-        "Il personale è formato al BLSD ove richiesto; esercitazioni periodiche documentate migliorano la prontezza.",
+        "Il <strong>titolare</strong> coordina l’attivazione delle procedure; in sua assenza il collaboratore di turno assume le funzioni operative fino all’arrivo dei soccorsi. È utile definire un <strong>ordine di priorità</strong> per la tutela del paziente, del personale e degli altri presenti.",
       ],
     },
-  ]) +
-    pianoEmergenzeEstesoBlock(c)
+    {
+      h: "3. Scenari, primi interventi e continuità assistenziale",
+      p: [
+        "Scenari tipo: malessere / sincope, emorragie, dolore toracico o sospetto evento cardiaco, arresto cardiaco, reazione allergica grave, crisi convulsiva, incidente strumentale con lesioni. Per ciascuno: valutazione rapida, messa in sicurezza, chiamata al <strong>118</strong> / <strong>112</strong> ove necessario, documentazione dell’evento.",
+      ],
+    },
+    {
+      h: "4. BLSD, DAE e formazione",
+      p: [
+        "Ove il personale sia formato al <strong>BLSD</strong> e sia disponibile un <strong>DAE</strong>, la procedura ne descrive ubicazione, accessibilità e verifiche periodiche. La formazione è aggiornata secondo protocolli riconosciuti e registrata nel fascicolo formazione.",
+      ],
+    },
+    {
+      h: "5. Dotazioni, vie di esodo e integrazione antincendio",
+      p: [
+        `Presidi di primo soccorso, estintori, segnaletica e percorsi di evacuazione devono essere coerenti con la documentazione antincendio e sottoposti a verifiche di scadenza. Indirizzo completo da comunicare al centralino: <strong>${c.address}</strong>.`,
+      ],
+    },
+  ],
+    { appendBeforeClosing: pianoEmergenzeEstesoBlock(c) }
   );
 }
 
 function doc07Isolation(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocument): string {
-  return (
-    doc03to07Block(c, doc, [
+  return doc03to07Block(
+    c,
+    doc,
+    [
     {
-      h: "1. Protocollo di isolamento",
+      h: "1. Finalità e principi",
       p: [
-        "Misure precauzionali per pazienti con patologie contagiose o potenzialmente tali: scheduling differito, uso di DPI, aerazione, sanificazione straordinaria e comunicazione ai servizi competenti ove indicato.",
+        `Il protocollo stabilisce misure <strong>proporzionate</strong> per la gestione di pazienti con <strong>patologie contagiose o potenzialmente tali</strong>, nel rispetto della sicurezza del paziente, degli operatori e degli altri utenti di <strong>${c.studioName}</strong>, in adempimento al requisito <strong>${escapeHtml(doc.code)}</strong>.`,
       ],
     },
     {
-      h: "2. Integrazione con piano emergenze",
+      h: "2. Valutazione anamnestica e screening organizzativo",
       p: [
-        "Allineamento con il piano emergenze e con le indicazioni delle autorità sanitarie in caso di focolai.",
+        "All’accettazione si raccoglie l’anamnesi rilevante e si valuta la presenza di sintomatologia compatibile con patologie trasmissibili; per le prestazioni non urgenti si può <strong>differire</strong> l’accesso secondo criteri documentati internamente.",
       ],
     },
-  ]) +
-    protocolloIsolamentoEstesoBlock(c)
+    {
+      h: "3. DPI, igiene delle mani, aerazione e sanificazione",
+      p: [
+        "Uso di DPI secondo rischio e tipo di procedura; igiene delle mani; ventilazione dei locali; sanificazione delle superfici e delle attrezzature secondo prodotti e modalità registrate, con integrazione al documento su pulizia e sanificazione ambienti.",
+      ],
+    },
+    {
+      h: "4. Comunicazioni istituzionali e documentazione",
+      p: [
+        "Flussi verso ATS / Igiene e sanità pubblica quando obbligatori; registrazione interna delle decisioni assunte. In caso di epidemie o circolari regionali, il protocollo è aggiornato di conseguenza.",
+      ],
+    },
+    {
+      h: "5. Integrazione con piano emergenze e formazione",
+      p: [
+        "Allineamento con il piano emergenze intra moenia e formazione periodica del personale su aggiornamenti normativi e circolari applicabili.",
+      ],
+    },
+  ],
+    { appendBeforeClosing: protocolloIsolamentoEstesoBlock(c) }
   );
 }
 
@@ -410,6 +472,8 @@ export function buildArticulatedBody(doc: ResolvedDocument, data: AllegatoFormDa
       return doc11MaintenancePlan(c, doc);
     case 12:
       return doc12TechSheets(c, doc);
+    case 23:
+      return explosivesNotApplicableBlock(c, doc);
     case 13:
     case 14:
     case 15:
@@ -420,7 +484,6 @@ export function buildArticulatedBody(doc: ResolvedDocument, data: AllegatoFormDa
     case 20:
     case 21:
     case 22:
-    case 23:
     case 24:
       return buildTechnicalForOrder(c, doc);
     case 25:
