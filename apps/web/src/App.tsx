@@ -98,7 +98,8 @@ function Wizard() {
               <strong className="muted">Sistema informativo — documento 2 (privacy)</strong>
               <p className="muted" style={{ margin: "0.35rem 0 0.5rem", fontSize: "0.88rem" }}>
                 Opzionale ma consigliato: dettagli su software, backup e analisi rischi per arricchire il PDF (requisito
-                1A.01.04.01).
+                1A.01.04.01). Le <strong>periferiche hardware</strong> (PC fissi/portatili, marca, modello, matricola)
+                alimentano il paragrafo «Hardware» dello stesso documento, separato dalle attrezzature cliniche.
               </p>
               <div className="field-grid">
                 <label className="field" style={{ gridColumn: "1 / -1" }}>
@@ -164,13 +165,25 @@ function Wizard() {
                   />
                 </label>
               </div>
+              <PeripheralsBlock
+                items={data.itProfile.peripherals ?? []}
+                onChange={(items) =>
+                  setData((d) => ({
+                    ...d,
+                    itProfile: { ...d.itProfile, peripherals: items },
+                  }))
+                }
+              />
             </div>
           </div>
         );
       case 1:
         return (
           <div className="list-editor">
-            <p className="muted">Segreteria, ASO, pulizie: aggiungi una riga per persona (opzionale).</p>
+            <p className="muted">
+              Segreteria, ASO, collaboratori e commercialista: una riga per persona (opzionale). Il commercialista va
+              indicato se ha credenziali dedicate per il gestionale (solo area contabile).
+            </p>
             <PeopleBlock
               title="Segreteria"
               items={data.staff.secretarial}
@@ -183,9 +196,9 @@ function Wizard() {
               onChange={(items) => setStaff({ orthodontists: items })}
             />
             <PeopleBlock
-              title="Pulizie"
-              items={data.staff.cleaning}
-              onChange={(items) => setStaff({ cleaning: items })}
+              title="Commercialista / consulente fiscale"
+              items={data.staff.accountant}
+              onChange={(items) => setStaff({ accountant: items })}
             />
           </div>
         );
@@ -468,6 +481,63 @@ function PeopleBlock({
         ))}
         <button type="button" className="secondary" onClick={add}>
           + Aggiungi
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function PeripheralsBlock({
+  items,
+  onChange,
+}: {
+  items: { category: string; brand?: string; model?: string; serialNumber?: string; notes?: string }[];
+  onChange: (next: typeof items) => void;
+}) {
+  const update = (idx: number, patch: Partial<(typeof items)[number]>) => {
+    const next = items.map((it, i) => (i === idx ? { ...it, ...patch } : it));
+    onChange(next);
+  };
+  const add = () => onChange([...items, { category: "", brand: "", model: "", serialNumber: "", notes: "" }]);
+  const remove = (idx: number) => onChange(items.filter((_, i) => i !== idx));
+
+  return (
+    <div style={{ marginTop: "0.75rem" }}>
+      <strong>Periferiche hardware (PC)</strong>
+      <p className="muted" style={{ margin: "0.35rem 0 0.5rem", fontSize: "0.88rem" }}>
+        Per il documento privacy: indicare se <strong>fisso o portatile</strong> nella colonna tipologia (es. «PC fisso —
+        segreteria»), più marca, modello e matricola/S.N.
+      </p>
+      <div className="list-editor">
+        {items.map((row, idx) => (
+          <div key={`periph-${idx}`} className="list-row" style={{ gridTemplateColumns: "1fr 1fr 1fr 1fr auto" }}>
+            <label className="field">
+              Tipologia (fisso/portatile, postazione)
+              <input value={row.category} onChange={(e) => update(idx, { category: e.target.value })} />
+            </label>
+            <label className="field">
+              Marca
+              <input value={row.brand ?? ""} onChange={(e) => update(idx, { brand: e.target.value })} />
+            </label>
+            <label className="field">
+              Modello
+              <input value={row.model ?? ""} onChange={(e) => update(idx, { model: e.target.value })} />
+            </label>
+            <label className="field">
+              Matricola / S.N.
+              <input value={row.serialNumber ?? ""} onChange={(e) => update(idx, { serialNumber: e.target.value })} />
+            </label>
+            <button type="button" className="secondary" onClick={() => remove(idx)}>
+              Rimuovi
+            </button>
+            <label className="field" style={{ gridColumn: "1 / -1" }}>
+              Note
+              <input value={row.notes ?? ""} onChange={(e) => update(idx, { notes: e.target.value })} />
+            </label>
+          </div>
+        ))}
+        <button type="button" className="secondary" onClick={add}>
+          + Aggiungi periferica
         </button>
       </div>
     </div>

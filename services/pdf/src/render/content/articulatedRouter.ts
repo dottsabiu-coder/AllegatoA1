@@ -259,7 +259,8 @@ function doc03Quality(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocum
     {
       h: "3. Metodo PDCA e documentazione delle azioni",
       p: [
-        "Pianificazione delle azioni, esecuzione controllata, verifica dei risultati rispetto agli obiettivi, aggiornamento degli standard. Le azioni correttive e preventive sono registrate con causa radice, responsabile e scadenza.",
+        "Il <strong>PDCA</strong> (<strong>Plan-Do-Check-Act</strong>) è un metodo iterativo di gestione in quattro fasi, noto come <strong>ciclo di Deming</strong> o di <strong>Shewhart</strong>, finalizzato al <strong>miglioramento continuo</strong> di processi, prodotti o servizi. Si basa su una logica ciclica per <strong>pianificare</strong> le azioni, <strong>eseguirle</strong>, <strong>verificare</strong> i risultati e <strong>standardizzare</strong> le soluzioni efficaci.",
+        "Nell’ambito del programma di qualità, le azioni correttive e preventive sono registrate con causa radice, responsabile e scadenza, collegando la fase <em>Do</em> all’esecuzione controllata e la fase <em>Check</em> al confronto con gli obiettivi misurabili.",
       ],
     },
     {
@@ -310,7 +311,7 @@ function doc04Complaints(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDo
       ],
     },
   ],
-    { appendBeforeClosing: complaintIntakeFormBlock() }
+    { prependAfterIntestazione: complaintIntakeFormBlock() }
   );
 }
 
