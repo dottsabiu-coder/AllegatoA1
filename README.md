@@ -65,6 +65,14 @@ Sul servizio PDF (Render, ecc.):
 - Aggiungi template per documento in `services/pdf/src/render/` (o spezza in file per `order`) senza toccare il registry se i codici restano gli stessi.
 - Il registry e lo schema in `packages/shared` sono la singola fonte di verità per ordine, codici e validazione (web + PDF).
 
+## Documentazione aggiuntiva (cartella `docs/`)
+
+| File | Contenuto |
+|------|-----------|
+| [`docs/MEMO-SVILUPPO-PROGETTO.md`](docs/MEMO-SVILUPPO-PROGETTO.md) | Memo tecnica: architettura, deploy, dove modificare PDF e form |
+| [`docs/GUIDA-UTENTE-ALLEGATO-A1.md`](docs/GUIDA-UTENTE-ALLEGATO-A1.md) | Guida per chi compila il wizard e scarica il PDF |
+| [`docs/GUIDA-OWNERS.md`](docs/GUIDA-OWNERS.md) | Istruzioni per i titolari: codici monouso, `/owner.html`, variabili Vercel |
+
 ## Nota legale
 
 I testi nel PDF sono **placeholder tecnici**: sostituirli con redazioni validate rispetto al modulo regionale e al manuale OTA prima di ogni uso ufficiale.

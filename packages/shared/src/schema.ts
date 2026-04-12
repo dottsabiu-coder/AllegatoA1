@@ -30,6 +30,8 @@ export const allegatoFormSchema = z.object({
   staff: z.object({
     secretarial: z.array(personRefSchema).default([]),
     aso: z.array(personRefSchema).default([]),
+    /** Collaboratori ortodontisti (professionisti con partita IVA / collaborazione). */
+    orthodontists: z.array(personRefSchema).default([]),
     cleaning: z.array(personRefSchema).default([]),
   }),
   equipment: z.object({
@@ -88,7 +90,7 @@ export const defaultAllegatoFormData: AllegatoFormData = {
     vatOrFiscalCode: "",
     openingOrAuthDate: "",
   },
-  staff: { secretarial: [], aso: [], cleaning: [] },
+  staff: { secretarial: [], aso: [], orthodontists: [], cleaning: [] },
   equipment: { items: [], electricalInstaller: "", fireMaintenanceCompany: "" },
   external: {
     wasteCompanyName: "",

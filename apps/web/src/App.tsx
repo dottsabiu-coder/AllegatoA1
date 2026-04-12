@@ -178,6 +178,11 @@ function Wizard() {
             />
             <PeopleBlock title="ASO" items={data.staff.aso} onChange={(items) => setStaff({ aso: items })} />
             <PeopleBlock
+              title="Collaboratori (ortodontisti)"
+              items={data.staff.orthodontists}
+              onChange={(items) => setStaff({ orthodontists: items })}
+            />
+            <PeopleBlock
               title="Pulizie"
               items={data.staff.cleaning}
               onChange={(items) => setStaff({ cleaning: items })}

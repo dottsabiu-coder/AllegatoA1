@@ -1,6 +1,18 @@
 import { escapeHtml } from "../escape.js";
 
 /**
+ * Testo introduttivo dell’indice come nel modulo regionale (ALL. A1 — modello Teresi / 12_Mod. ALL. A1).
+ */
+export function indexCoverPremessaModuloRegionale(): string {
+  return `
+<p>Per struttura non residenziale semplici monopresidio<br />
+<em>(vedi definizioni art. 2 e classificazione art. 3 del D.A. 9 gennaio 2024 n. 20).</em></p>
+<p>Per una puntuale applicazione di ciascun requisito fare riferimento ai subcodici riportati nell’allegato A1 del D.A. 9 gennaio 2024 n. 20.</p>
+<p>Il Responsabile della struttura metterà a disposizione del GdV prima della visita i seguenti documenti previsti dai requisiti generali per l’autorizzazione di cui all’allegato A1 al decreto assessoriale 09 gennaio 2024 n. 20 <em>(G.U.R.S. 26 gennaio 2024, n. 5, S.O. n. 4)</em>.</p>
+`;
+}
+
+/**
  * Parte generale (come nell’A1 di riferimento): prima il quadro normativo e gli scopi del requisito,
  * poi il caso specifico della struttura. Testo orientativo — verificare con consulenza legale.
  */
