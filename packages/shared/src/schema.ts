@@ -32,7 +32,10 @@ export const allegatoFormSchema = z.object({
     aso: z.array(personRefSchema).default([]),
     /** Collaboratori ortodontisti (professionisti con partita IVA / collaborazione). */
     orthodontists: z.array(personRefSchema).default([]),
+    /** @deprecated Non più riportato nel PDF (nessun accesso ai PC); mantenuto per compatibilità dati. */
     cleaning: z.array(personRefSchema).default([]),
+    /** Commercialista / consulente fiscale con accesso profilato al gestionale (solo area contabile). */
+    accountant: z.array(personRefSchema).default([]),
   }),
   equipment: z.object({
     items: z.array(equipmentItemSchema).default([]),
@@ -73,6 +76,8 @@ export const allegatoFormSchema = z.object({
       osSummary: z.string().trim().optional(),
       backupModality: z.string().trim().optional(),
       riskAnalysisSummary: z.string().trim().optional(),
+      /** PC e periferiche hardware (documento privacy — § hardware); distinte dalle attrezzature cliniche. */
+      peripherals: z.array(equipmentItemSchema).default([]),
     })
     .default({}),
 });
@@ -90,7 +95,7 @@ export const defaultAllegatoFormData: AllegatoFormData = {
     vatOrFiscalCode: "",
     openingOrAuthDate: "",
   },
-  staff: { secretarial: [], aso: [], orthodontists: [], cleaning: [] },
+  staff: { secretarial: [], aso: [], orthodontists: [], cleaning: [], accountant: [] },
   equipment: { items: [], electricalInstaller: "", fireMaintenanceCompany: "" },
   external: {
     wasteCompanyName: "",
@@ -109,5 +114,5 @@ export const defaultAllegatoFormData: AllegatoFormData = {
     notes: "",
   },
   facility: { hasIonizingRadiation: false, hasMedicalGas: false, hasInterns: false },
-  itProfile: {},
+  itProfile: { peripherals: [] },
 };

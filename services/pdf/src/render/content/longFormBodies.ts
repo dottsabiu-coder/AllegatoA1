@@ -17,12 +17,10 @@ export function technicalComplianceBlock(c: BodyContext, doc: ResolvedDocument, 
   const { matter, laws, label, generalHtml } = spec;
   return (
     intestazioneRequisitoSpecifico(doc.code, label) +
-    `<h2>Applicazione alla struttura</h2><p>Le sezioni seguenti si riferiscono a <strong>${c.studioName}</strong>, con sede in <strong>${c.address}</strong>; titolare della struttura <strong>${c.ownerName}</strong> (c.f. / p.iva: <strong>${c.vat}</strong>). Per la monopresidio <strong>non si attribuiscono</strong>, salvo atti pubblici che lo prevedano, figure di “direttore sanitario” o “responsabile tecnico” <em>distinte</em> dal titolare.</p>` +
     `<h2>Parte generale — ${escapeHtml(label)}</h2>` +
     generalHtml +
     `<h2>Attestazione documentale e ambito probatorio</h2>
 <p>L’obiettivo è attestare, in forma organica e verificabile, che la tipologia di attività svolta è supportata da <strong>documentazione tecnica</strong> coerente con la materia di <em>${escapeHtml(matter)}</em>, con riferimento ai principali dettami normativi applicabili in via generale: ${laws}. Le indicazioni che seguono hanno valore di quadro descrittivo e operativo; certificati, verbali di collaudo, pratiche VVF, relazioni specialistiche e allegati restano acquisiti nel fascicolo fisico o digitale della struttura.</p>
-${c.openingLine}
 
 <h2>1. Descrizione della struttura e dei locali</h2>
 <p>La struttura opera nei locali di cui all’indirizzo sopra indicato. Le caratteristiche planimetriche e funzionali, nel limite dei dati raccolti tramite il gestionale, sono sintetizzate come segue:</p>
@@ -58,8 +56,7 @@ ${c.externalSectionHtml}
 export function ionizingLong(c: BodyContext, doc: ResolvedDocument): string {
   return (
     intestazioneRequisitoSpecifico(doc.code, "Protezione da radiazioni ionizzanti — non applicabilità") +
-    `<h2>Applicazione alla struttura</h2><p>La dichiarazione seguente riguarda <strong>${c.studioName}</strong>, <strong>${c.address}</strong>, titolare <strong>${c.ownerName}</strong>.</p>
-<h2>Parte generale — radioprotezione</h2>
+    `<h2>Parte generale — radioprotezione</h2>
 <p>La normativa in materia di radiazioni ionizzanti (D.Lgs. 101/2020 e provvedimenti applicativi) impone, ove presenti sorgenti o apparecchiature radiogene, un sistema documentato di <strong>autorizzazioni</strong>, <strong>valutazioni di sicurezza</strong>, <strong>formazione</strong>, <strong>controlli di qualità</strong> e <strong>gestione delle aree</strong> controllate o sorvegliate.</p>
 <p>Il Manuale OTA e le indicazioni regionali per le strutture monopresidio richiedono che la documentazione sia <strong>coerente con l’inventario effettivo</strong> delle apparecchiature e che ogni modifica impiantistica o sostitutiva determini l’aggiornamento del fascicolo.</p>
 <h2>Situazione dichiarata dalla struttura</h2>
@@ -79,10 +76,8 @@ export function ionizingLong(c: BodyContext, doc: ResolvedDocument): string {
 export function gasLong(c: BodyContext, doc: ResolvedDocument): string {
   return (
     intestazioneRequisitoSpecifico(doc.code, "Impianti di distribuzione gas medicali — non applicabilità") +
-    `<h2>Applicazione alla struttura</h2><p>La dichiarazione seguente riguarda <strong>${c.studioName}</strong>, <strong>${c.address}</strong>, titolare <strong>${c.ownerName}</strong>.</p>
-<h2>Situazione dichiarata</h2>
-<p>Per il requisito <strong>${escapeHtml(doc.code)}</strong> la struttura dichiara la <strong>non applicabilità</strong> dell’impianto centralizzato di distribuzione di gas medicali rispetto alle attività effettivamente svolte. Restano salve, ove presenti, le norme su stoccaggio e sicurezza di bombole o sorgenti portatili per usi strumentali non assimilabili a rete fissa; ogni futura installazione centralizzata comporterà l’aggiornamento del fascicolo.</p>
-${c.openingLine}` +
+    `<h2>Situazione dichiarata</h2>
+<p>Per il requisito <strong>${escapeHtml(doc.code)}</strong> la struttura dichiara la <strong>non applicabilità</strong> dell’impianto centralizzato di distribuzione di gas medicali rispetto alle attività effettivamente svolte. Restano salve, ove presenti, le norme su stoccaggio e sicurezza di bombole o sorgenti portatili per usi strumentali non assimilabili a rete fissa; ogni futura installazione centralizzata comporterà l’aggiornamento del fascicolo.</p>` +
     sharedClosing(c)
   );
 }
@@ -93,13 +88,11 @@ export function internsLong(c: BodyContext, doc: ResolvedDocument): string {
       doc.code,
       "Identificazione tirocinanti e percorsi formativi — assenza al momento"
     ) +
-    `<h2>Applicazione alla struttura</h2><p>La dichiarazione seguente riguarda <strong>${c.studioName}</strong>, <strong>${c.address}</strong>, titolare <strong>${c.ownerName}</strong>.</p>
-<h2>Parte generale — identificazione e tracciabilità</h2>
+    `<h2>Parte generale — identificazione e tracciabilità</h2>
 <p>Il requisito mira a garantire che ogni soggetto che entri nel percorso assistenziale in veste formativa sia <strong>identificabile</strong>, <strong>autorizzato</strong>, <strong>coperto</strong> da assicurazioni e accordi con l’ente di provenienza, e <strong>formato</strong> su privacy, sicurezza e limiti operativi.</p>
 <p>La documentazione tipica include: convenzione o protocollo con università / scuole, <strong>registro presenze</strong>, designazione del <strong>tutor</strong>, estremi anagrafici, limitazioni alle attività cliniche, DPI e vaccinazioni ove richieste.</p>
 <h2>Situazione dichiarata dalla struttura</h2>
 <p>La struttura <strong>${c.studioName}</strong> dichiara che <strong>non ospita al momento tirocinanti o percorsi formativi</strong> che richiedano identificazione e tracciabilità aggiuntiva oltre al personale strutturale già censito negli altri documenti dell’Allegato A1.</p>
-${c.openingLine}
 <h2>Impegni in caso di futuro ingresso di tirocinanti</h2>
 <ul>
 <li>Identificazione formale, convenzione con ente formativo, coperture assicurative e trattamento privacy conforme.</li>
@@ -114,8 +107,6 @@ ${c.openingLine}
 export function explosivesNotApplicableBlock(c: BodyContext, doc: ResolvedDocument): string {
   return (
     intestazioneRequisitoSpecifico(doc.code, "Materiali esplodenti — non detenzione") +
-    `<h2>Applicazione alla struttura</h2><p>La dichiarazione seguente riguarda <strong>${c.studioName}</strong>, <strong>${c.address}</strong>, titolare <strong>${c.ownerName}</strong>.</p>` +
-    c.openingLine +
     `<h2>Situazione dichiarata</h2>
 <p>La struttura dichiara di <strong>non detenere materiali esplodenti</strong> né sostanze assimilabili che richiedano autorizzazioni ex normativa sugli esplosivi, nell’ambito dell’ordinario esercizio professionale. Qualsiasi futura detenzione comporta l’aggiornamento del fascicolo e gli adempimenti di legge.</p>` +
     sharedClosing(c)
@@ -421,8 +412,8 @@ ${c.openingLine}
 ${c.itProfileSectionHtml}
 
 <h2>3. Hardware, periferiche e postazioni di lavoro</h2>
-<p>Di seguito l’elenco delle apparecchiature censite (categoria, marca, modello, matricola), utile anche come “scheda rilevazione risorse” ai fini della sicurezza dei dati:</p>
-${c.equipmentSectionHtml}
+<p>Di seguito l’elenco delle <strong>periferiche hardware</strong> e delle postazioni di lavoro (in particolare <strong>PC fissi o portatili</strong>, con <strong>marca</strong>, <strong>modello</strong> e <strong>matricola o numero di serie</strong>), distinto dalle attrezzature odontoiatriche cliniche censite negli altri allegati tecnici:</p>
+${c.peripheralsSectionHtml}
 
 <h2>4. Accessi logici, antivirus, firewall e continuità</h2>
 <p>Account individuali, policy password, aggiornamenti di sistema, antivirus aggiornato, firewall a livello di sistema o perimetrale ove presente. Per la continuità operativa e la disponibilità dei dati si fa riferimento alla modalità di backup dichiarata al §2 e alle misure ridondanti eventualmente in uso (UPS, gruppi di continuità).</p>
@@ -449,20 +440,16 @@ ${c.staffSectionHtml}
   );
 }
 
-/** Intestazione lunga (quadro A1 + codice + ancoraggio alla struttura) per documenti 25–32. */
-function leadArticulatedDoc(c: BodyContext, code: string, titleShort: string): string {
-  return (
-    intestazioneRequisitoSpecifico(code, titleShort) +
-    `<h2>Applicazione alla struttura</h2><p>Le sezioni seguenti si riferiscono a <strong>${c.studioName}</strong>, con sede in <strong>${c.address}</strong>; titolare della struttura <strong>${c.ownerName}</strong>.</p>` +
-    c.openingLine
-  );
+/** Intestazione (quadro A1 + codice) per documenti 25–32. */
+function leadArticulatedDoc(_c: BodyContext, code: string, titleShort: string): string {
+  return intestazioneRequisitoSpecifico(code, titleShort);
 }
 
 export function doc03to07Block(
   c: BodyContext,
   doc: ResolvedDocument,
   sections: { h: string; p: string[] }[],
-  options?: { appendBeforeClosing?: string }
+  options?: { appendBeforeClosing?: string; prependAfterIntestazione?: string }
 ): string {
   const body = sections
     .map(
@@ -471,9 +458,10 @@ export function doc03to07Block(
     )
     .join("");
   const beforeClose = options?.appendBeforeClosing ?? "";
+  const prepend = options?.prependAfterIntestazione ?? "";
   return (
     intestazioneRequisitoSpecifico(doc.code, doc.title) +
-    `<h2>Applicazione alla struttura</h2><p>Le sezioni seguenti si riferiscono a <strong>${c.studioName}</strong>, <strong>${c.address}</strong>, titolare <strong>${c.ownerName}</strong>.</p>` +
+    prepend +
     body +
     beforeClose +
     sharedClosing(c)

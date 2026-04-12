@@ -14,6 +14,8 @@ export type BodyContext = {
   hasInterns: boolean;
   staffSectionHtml: string;
   equipmentSectionHtml: string;
+  /** Elenco periferiche / postazioni PC per il doc. privacy (non attrezzature cliniche). */
+  peripheralsSectionHtml: string;
   insuranceSectionHtml: string;
   premisesSectionHtml: string;
   externalSectionHtml: string;
@@ -47,7 +49,10 @@ export function buildBodyContext(data: AllegatoFormData): BodyContext {
     peopleList("Segreteria e accoglienza amministrativa", data.staff.secretarial),
     peopleList("Assistenti di studio odontoiatrico (ASO) e affini", data.staff.aso),
     peopleList("Collaboratori (ortodontisti)", data.staff.orthodontists),
-    peopleList("Addetti alle pulizie e sanificazione ambienti", data.staff.cleaning),
+    peopleList(
+      "Commercialista / consulente fiscale (password dedicata; accesso al software gestionale limitato alla sola parte contabile: fatturazione, invio al sistema Tessera Sanitaria, ecc.)",
+      data.staff.accountant
+    ),
   ].join("");
 
   const eq = data.equipment.items;
@@ -69,6 +74,21 @@ export function buildBodyContext(data: AllegatoFormData): BodyContext {
   }
   if (data.equipment.fireMaintenanceCompany?.trim()) {
     equipmentSectionHtml += `<p>Ditta manutenzione estintori / impianti antincendio dichiarata: <strong>${escapeHtml(data.equipment.fireMaintenanceCompany.trim())}</strong>.</p>`;
+  }
+
+  const periph = data.itProfile.peripherals ?? [];
+  let peripheralsSectionHtml: string;
+  if (periph.length === 0) {
+    peripheralsSectionHtml =
+      "<p><em>Nel modulo non risultano periferiche hardware censite; indicare almeno i PC (fisso o portatile), marca, modello e matricola/S.N. nella sezione «Periferiche hardware» prima della visita del GdV.</em></p>";
+  } else {
+    const pRows = periph
+      .map(
+        (e) =>
+          `<tr><td>${escapeHtml(e.category)}</td><td>${escapeHtml(e.brand ?? "—")}</td><td>${escapeHtml(e.model ?? "—")}</td><td>${escapeHtml(e.serialNumber ?? "—")}</td><td>${escapeHtml(e.notes ?? "—")}</td></tr>`
+      )
+      .join("");
+    peripheralsSectionHtml = `<table class="data-table" style="width:100%;border-collapse:collapse;font-size:10pt;margin:0.6rem 0;"><thead><tr><th style="border:1px solid #333;padding:0.25rem;">Tipologia PC (fisso / portatile, postazione)</th><th style="border:1px solid #333;padding:0.25rem;">Marca</th><th style="border:1px solid #333;padding:0.25rem;">Modello</th><th style="border:1px solid #333;padding:0.25rem;">Matricola / S.N.</th><th style="border:1px solid #333;padding:0.25rem;">Note</th></tr></thead><tbody>${pRows}</tbody></table>`;
   }
 
   const ins = data.insurance;
@@ -128,6 +148,7 @@ export function buildBodyContext(data: AllegatoFormData): BodyContext {
     hasInterns: data.facility.hasInterns,
     staffSectionHtml,
     equipmentSectionHtml,
+    peripheralsSectionHtml,
     insuranceSectionHtml,
     premisesSectionHtml,
     externalSectionHtml,
