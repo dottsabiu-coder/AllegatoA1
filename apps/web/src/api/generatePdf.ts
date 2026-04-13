@@ -15,6 +15,7 @@ function sanitizePayload(data: AllegatoFormData): AllegatoFormData {
       aso: people(data.staff.aso),
       orthodontists: people(data.staff.orthodontists),
       cleaning: people(data.staff.cleaning),
+      accountant: people(data.staff.accountant),
     },
     equipment: {
       ...data.equipment,

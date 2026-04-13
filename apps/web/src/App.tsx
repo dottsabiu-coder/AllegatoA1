@@ -88,6 +88,29 @@ function Wizard() {
               />
             </label>
             <label className="field">
+              Telefono (carta dei servizi / PDF)
+              <input
+                value={data.studio.phone ?? ""}
+                onChange={(e) => setStudio({ phone: e.target.value })}
+              />
+            </label>
+            <label className="field">
+              E-mail
+              <input
+                type="email"
+                value={data.studio.email ?? ""}
+                onChange={(e) => setStudio({ email: e.target.value })}
+              />
+            </label>
+            <label className="field" style={{ gridColumn: "1 / -1" }}>
+              Orari di apertura al pubblico (testo libero)
+              <input
+                placeholder="es. lun–gio 9:00–13:00, 15:00–19:00"
+                value={data.studio.openingHours ?? ""}
+                onChange={(e) => setStudio({ openingHours: e.target.value })}
+              />
+            </label>
+            <label className="field">
               Etichetta revisione PDF
               <input
                 value={data.meta.revisionLabel}
@@ -354,6 +377,37 @@ function Wizard() {
             <label className="field" style={{ gridColumn: "1 / -1" }}>
               Note sui locali
               <textarea value={data.premises.notes ?? ""} onChange={(e) => setPremises({ notes: e.target.value })} />
+            </label>
+            <p className="muted" style={{ gridColumn: "1 / -1", fontSize: "0.88rem", margin: "0.25rem 0 0" }}>
+              Campi seguenti alimentano il <strong>documento 13</strong> (caratteristiche ambientali / titoli), se compilati.
+            </p>
+            <label className="field" style={{ gridColumn: "1 / -1" }}>
+              Ubicazione e accessi (piano, ingresso da via, ecc.)
+              <input
+                value={data.premises.floorAndAccess ?? ""}
+                onChange={(e) => setPremises({ floorAndAccess: e.target.value })}
+              />
+            </label>
+            <label className="field" style={{ gridColumn: "1 / -1" }}>
+              Catasto / NCEU (foglio, particella, sub, categoria…)
+              <input
+                value={data.premises.cadastralReference ?? ""}
+                onChange={(e) => setPremises({ cadastralReference: e.target.value })}
+              />
+            </label>
+            <label className="field" style={{ gridColumn: "1 / -1" }}>
+              Titoli comunali (destinazione d’uso, agibilità, atti di concessione…)
+              <textarea
+                value={data.premises.municipalTitlesSummary ?? ""}
+                onChange={(e) => setPremises({ municipalTitlesSummary: e.target.value })}
+              />
+            </label>
+            <label className="field" style={{ gridColumn: "1 / -1" }}>
+              Altre dichiarazioni ambientali / urbanistiche (scarichi, emissioni, VVF…)
+              <textarea
+                value={data.premises.environmentalExtraSummary ?? ""}
+                onChange={(e) => setPremises({ environmentalExtraSummary: e.target.value })}
+              />
             </label>
           </div>
         );

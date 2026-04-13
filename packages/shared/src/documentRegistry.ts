@@ -90,7 +90,7 @@ export const DOCUMENT_REGISTRY: readonly DocumentRegistryEntry[] = [
     order: 17,
     code: "1A.03.05.05",
     title:
-      "Documentazione tecnica, in relazione alla tipologia delle attività svolte, attestante il possesso dei requisiti previsti dalle vigenti leggi in materia di sicurezza anti-infortunistica",
+      "Documentazione tecnica, in relazione alla tipologia delle attività svolte, attestante il possesso dei requisiti previsti dalle vigenti leggi in materia di sicurezza antiinfortunistica",
   },
   {
     order: 18,

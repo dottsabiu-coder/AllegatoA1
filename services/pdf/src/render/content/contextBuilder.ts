@@ -21,6 +21,18 @@ export type BodyContext = {
   externalSectionHtml: string;
   /** Blocco software / backup / analisi rischi per doc. 2. */
   itProfileSectionHtml: string;
+  /** Frase contratto manutenzione presidi antincendio (doc. 14), da dati modulo. */
+  fireMaintenanceContractClauseHtml: string;
+  /** Frase contratto smaltimento rifiuti (doc. 20), da dati modulo. */
+  wasteDisposalContractClauseHtml: string;
+  /** Blocco HTML elenco titoli / catasto per doc. 13 (vuoto se nessun campo compilato). */
+  premisesLegalSectionHtml: string;
+  /** Telefono studio (escapato) o stringa vuota. */
+  studioPhone: string;
+  /** E-mail studio (escapata) o stringa vuota. */
+  studioEmail: string;
+  /** Paragrafo orari apertura per carta servizi. */
+  openingHoursBlockHtml: string;
 };
 
 function peopleList(title: string, rows: { name: string; role?: string }[]): string {
@@ -101,7 +113,34 @@ export function buildBodyContext(data: AllegatoFormData): BodyContext {
   premisesBits.push(`sala d’attesa: <strong>${pr.hasWaitingRoom ? "sì" : "no"}</strong>`);
   if (pr.bathroomCount != null) premisesBits.push(`servizi igienici: <strong>${pr.bathroomCount}</strong>`);
   premisesBits.push(`area/locale dedicato alla sterilizzazione: <strong>${pr.hasSterilizationRoom ? "sì" : "no"}</strong>`);
-  const premisesSectionHtml = `<p>${premisesBits.join("; ")}.</p>`;
+  let premisesSectionHtml = `<p>${premisesBits.join("; ")}.</p>`;
+  if (pr.notes?.trim()) {
+    premisesSectionHtml += `<p><strong>Ulteriori annotazioni sui locali, titoli edilizi o destinazioni d’uso (testo libero dal modulo):</strong> ${escapeHtml(pr.notes.trim())}</p>`;
+  }
+
+  const legalBits: string[] = [];
+  if (pr.floorAndAccess?.trim())
+    legalBits.push(`<li><strong>Ubicazione e accessi:</strong> ${escapeHtml(pr.floorAndAccess.trim())}</li>`);
+  if (pr.cadastralReference?.trim())
+    legalBits.push(`<li><strong>Catasto / NCEU e identificativi:</strong> ${escapeHtml(pr.cadastralReference.trim())}</li>`);
+  if (pr.municipalTitlesSummary?.trim())
+    legalBits.push(
+      `<li><strong>Destinazione d’uso, agibilità, atti e autorizzazioni comunali:</strong> ${escapeHtml(pr.municipalTitlesSummary.trim())}</li>`
+    );
+  if (pr.environmentalExtraSummary?.trim())
+    legalBits.push(
+      `<li><strong>Ulteriori dichiarazioni ambientali / urbanistiche:</strong> ${escapeHtml(pr.environmentalExtraSummary.trim())}</li>`
+    );
+  const premisesLegalSectionHtml =
+    legalBits.length > 0
+      ? `<h2>Dichiarazioni su caratteristiche ambientali e titoli (da modulo web)</h2><ol style="margin-left:1.1rem;padding-left:0.5rem;">${legalBits.join("")}</ol>`
+      : "";
+
+  const studioPhone = data.studio.phone?.trim() ? escapeHtml(data.studio.phone.trim()) : "";
+  const studioEmail = data.studio.email?.trim() ? escapeHtml(data.studio.email.trim()) : "";
+  const openingHoursBlockHtml = data.studio.openingHours?.trim()
+    ? `<p><strong>Orari di apertura al pubblico:</strong> ${escapeHtml(data.studio.openingHours.trim())}</p>`
+    : `<p><strong>Orari di apertura al pubblico:</strong> <em>indicare nel campo «Orari» del modulo web o nella carta affissa in sede.</em></p>`;
 
   const ex = data.external;
   const extLines: string[] = [];
@@ -136,6 +175,17 @@ export function buildBodyContext(data: AllegatoFormData): BodyContext {
       ? `<div class="it-profile-block"><h3>Dati dichiarati sul sistema informativo</h3><ul>${itParts.map((p) => `<li>${p}</li>`).join("")}</ul></div>`
       : `<p><em>Nel modulo web non sono stati inseriti i dettagli software/backup/analisi rischi: compilare la sezione «Sistema informativo (privacy)» o integrare a mano questo capitolo prima della visita del GdV.</em></p>`;
 
+  const fireCo = data.equipment.fireMaintenanceCompany?.trim();
+  const fireMaintenanceContractClauseHtml = fireCo
+    ? `con la ditta <strong>${escapeHtml(fireCo)}</strong>`
+    : `con ditta specializzata di cui al contratto conservato in sede`;
+
+  const wasteCo = ex.wasteCompanyName?.trim();
+  const wasteVat = ex.wasteCompanyVat?.trim();
+  const wasteDisposalContractClauseHtml = wasteCo
+    ? `Di aver stipulato un contratto con la ditta <strong>${escapeHtml(wasteCo)}</strong>${wasteVat ? ` (P.IVA ${escapeHtml(wasteVat)})` : ""} specializzata per il ritiro e lo smaltimento dei rifiuti speciali. Il presente contratto è allegato alla presente documentazione ed è disponibile in sede.`
+    : `Di aver stipulato contratti con centri autorizzati per il ritiro e lo smaltimento dei rifiuti speciali; estremi contrattuali e allegati sono conservati in sede e disponibili per il GdV (<em>indicare il gestore nel modulo — sezione fornitori esterni</em>).`;
+
   return {
     studioName,
     ownerName,
@@ -153,5 +203,11 @@ export function buildBodyContext(data: AllegatoFormData): BodyContext {
     premisesSectionHtml,
     externalSectionHtml,
     itProfileSectionHtml,
+    fireMaintenanceContractClauseHtml,
+    wasteDisposalContractClauseHtml,
+    premisesLegalSectionHtml,
+    studioPhone,
+    studioEmail,
+    openingHoursBlockHtml,
   };
 }

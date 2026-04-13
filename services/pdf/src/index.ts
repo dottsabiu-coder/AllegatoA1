@@ -3,6 +3,7 @@ import cors from "@fastify/cors";
 import { chromium } from "playwright";
 import { allegatoFormSchema, resolveDocuments } from "@allegato-a1/shared";
 import { buildAllegatoHtml } from "./render/htmlAssembly.js";
+import { TERESI_LAYOUT, playwrightPdfMargins } from "./render/teresiLayout.js";
 
 const PORT = Number(process.env.PORT) || 8787;
 
@@ -92,13 +93,13 @@ app.post("/generate", async (request, reply) => {
       displayHeaderFooter: true,
       headerTemplate: "<div></div>",
       footerTemplate: `
-        <div style="width:100%;font-size:9px;padding:0 30mm;color:#333;font-family:Times New Roman,serif;display:flex;justify-content:space-between;align-items:center;">
+        <div style="width:100%;font-size:9px;padding:0 ${TERESI_LAYOUT.footerPaddingHorizontal};color:#333;font-family:Times New Roman,serif;display:flex;justify-content:space-between;align-items:center;">
           <span>${escapeAttr(data.studio.structureName)}</span>
           <span>Pag. <span class="pageNumber"></span> di <span class="totalPages"></span></span>
           <span>${escapeAttr(data.meta.revisionLabel)}</span>
         </div>`,
-      /* Allineato a @page in htmlAssembly: margini ampi → colonna stretta, più a capo, fascicolo >100 pag. */
-      margin: { top: "24mm", bottom: "28mm", left: "36mm", right: "36mm" },
+      /* Allineato a @page in htmlAssembly / modulo Teresi (12_Mod. ALL. A1). */
+      margin: playwrightPdfMargins(),
     });
 
     return reply

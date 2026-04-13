@@ -7,8 +7,11 @@ export function indexCoverPremessaModuloRegionale(): string {
   return `
 <p>Per struttura non residenziale semplici monopresidio<br />
 <em>(vedi definizioni art. 2 e classificazione art. 3 del D.A. 9 gennaio 2024 n. 20).</em></p>
-<p>Per una puntuale applicazione di ciascun requisito fare riferimento ai subcodici riportati nell’allegato A1 del D.A. 9 gennaio 2024 n. 20.</p>
-<p>Il Responsabile della struttura metterà a disposizione del GdV prima della visita i seguenti documenti previsti dai requisiti generali per l’autorizzazione di cui all’allegato A1 al decreto assessoriale 09 gennaio 2024 n. 20 <em>(G.U.R.S. 26 gennaio 2024, n. 5, S.O. n. 4)</em>.</p>
+<p>Per una puntuale applicazione di ciascun requisito fare riferimento ai subcodici riportati nell’allegato<br />
+A1 del D.A. 9 gennaio 2024 n. 20.</p>
+<p>Il Responsabile della struttura metterà a disposizione del GdV prima della visita i seguenti documenti previsti<br />
+dai requisiti generali per l’autorizzazione di cui all’allegato A1 al decreto assessoriale 09 gennaio 2024 n. 20<br />
+<em>(G.U.R.S. 26 gennaio 2024, n. 5, S.O. n. 4)</em></p>
 `;
 }
 

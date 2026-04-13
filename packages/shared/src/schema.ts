@@ -26,6 +26,11 @@ export const allegatoFormSchema = z.object({
     addressLine: z.string().trim().min(1, "Indirizzo obbligatorio"),
     vatOrFiscalCode: z.string().trim().min(1, "P.IVA / Codice fiscale obbligatorio"),
     openingOrAuthDate: z.string().trim().optional(),
+    /** Carta dei servizi / front office (documento 26). */
+    phone: optionalNonEmptyString,
+    email: optionalNonEmptyString,
+    /** Es. «lun–gio 9:00–13:00, 15:00–19:00». */
+    openingHours: optionalNonEmptyString,
   }),
   staff: z.object({
     secretarial: z.array(personRefSchema).default([]),
@@ -62,6 +67,14 @@ export const allegatoFormSchema = z.object({
     bathroomCount: z.number().int().nonnegative().optional(),
     hasSterilizationRoom: z.boolean().default(false),
     notes: optionalNonEmptyString,
+    /** Doc. 13 — ubicazione (es. piano terra, ingresso da via …). */
+    floorAndAccess: optionalNonEmptyString,
+    /** Doc. 13 — riferimenti catastali / NCEU. */
+    cadastralReference: optionalNonEmptyString,
+    /** Doc. 13 — destinazione d’uso, agibilità, atti comunali (testo libero). */
+    municipalTitlesSummary: optionalNonEmptyString,
+    /** Doc. 13 — ulteriori dichiarazioni (scarichi, emissioni, VVF, ecc.). */
+    environmentalExtraSummary: optionalNonEmptyString,
   }),
   facility: z.object({
     hasIonizingRadiation: z.boolean().default(false),
@@ -94,6 +107,9 @@ export const defaultAllegatoFormData: AllegatoFormData = {
     addressLine: "",
     vatOrFiscalCode: "",
     openingOrAuthDate: "",
+    phone: "",
+    email: "",
+    openingHours: "",
   },
   staff: { secretarial: [], aso: [], orthodontists: [], cleaning: [], accountant: [] },
   equipment: { items: [], electricalInstaller: "", fireMaintenanceCompany: "" },
@@ -112,6 +128,10 @@ export const defaultAllegatoFormData: AllegatoFormData = {
     bathroomCount: undefined,
     hasSterilizationRoom: false,
     notes: "",
+    floorAndAccess: "",
+    cadastralReference: "",
+    municipalTitlesSummary: "",
+    environmentalExtraSummary: "",
   },
   facility: { hasIonizingRadiation: false, hasMedicalGas: false, hasInterns: false },
   itProfile: { peripherals: [] },
