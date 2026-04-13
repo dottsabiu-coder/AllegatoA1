@@ -1,6 +1,7 @@
 import type { ResolvedDocument } from "@allegato-a1/shared";
 import { escapeHtml } from "../escape.js";
 import type { BodyContext } from "./contextBuilder.js";
+import { insuranceAdhesionFormBlock } from "./blocksForms.js";
 import { intestazioneRequisitoSpecifico } from "./normativePreamble.js";
 import { customerSatisfactionQuestionnaireBlock } from "./teresi/teresiShared.js";
 
@@ -32,8 +33,7 @@ ${c.premisesSectionHtml}
 ${c.staffSectionHtml}
 
 <h2>3. Attrezzature, impianti e manutenzione</h2>
-<p>L’elenco delle principali apparecchiature dichiarate — utile ai fini della tracciabilità e della manutenzione — è riportato di seguito. Si ricorda che la documentazione tecnica di fabbrica, i manuali d’uso e i registri di manutenzione devono essere conservati e resi disponibili agli operatori e al responsabile della manutenzione, come previsto dai requisiti dell’Allegato A1.</p>
-${c.equipmentSectionHtml}
+<p>Per evitare duplicazioni nel fascicolo, l’inventario delle apparecchiature è documentato nel <strong>documento n. 10</strong>, il piano di manutenzione e le <strong>verifiche periodiche</strong> nel <strong>documento n. 11</strong>, la documentazione tecnica di fabbrica nel <strong>documento n. 12</strong>. Manuali, certificati, rapportini e registri di intervento restano acquisiti in sede e sono esibiti al GdV su richiesta.</p>
 
 <h2>4. Fornitori, consulenze e servizi esterni</h2>
 <p>Per attività per le quali è previsto il coinvolgimento di soggetti terzi (consulenze, smaltimenti, manutenzioni specialistiche), la struttura tiene traccia dei riferimenti essenziali:</p>
@@ -76,8 +76,7 @@ export function ionizingLong(c: BodyContext, doc: ResolvedDocument): string {
 export function gasLong(c: BodyContext, doc: ResolvedDocument): string {
   return (
     intestazioneRequisitoSpecifico(doc.code, "Impianti di distribuzione gas medicali — non applicabilità") +
-    `<h2>Situazione dichiarata</h2>
-<p>Per il requisito <strong>${escapeHtml(doc.code)}</strong> la struttura dichiara la <strong>non applicabilità</strong> dell’impianto centralizzato di distribuzione di gas medicali rispetto alle attività effettivamente svolte. Restano salve, ove presenti, le norme su stoccaggio e sicurezza di bombole o sorgenti portatili per usi strumentali non assimilabili a rete fissa; ogni futura installazione centralizzata comporterà l’aggiornamento del fascicolo.</p>` +
+    `<p>Per il requisito <strong>${escapeHtml(doc.code)}</strong> la struttura dichiara la <strong>non applicabilità</strong> dell’impianto di distribuzione centralizzato di gas medicali rispetto alle attività svolte.</p>` +
     sharedClosing(c)
   );
 }
@@ -231,11 +230,7 @@ ${c.staffSectionHtml}
 </tbody>
 </table>
 
-<h2>5. Risorse strumentali e tecnologiche (inventario)</h2>
-<p>A titolo esemplificativo, le risorse strumentali tipiche possono includere: unità odontoiatrica, radiografia digitale, scanner intraorale, micromotore, termodisinfettore, autoclave, aspirazione, lampada polimerizzante. L’elenco effettivo dichiarato è il seguente:</p>
-${c.equipmentSectionHtml}
-
-<h2>6. Monitoraggio e miglioramento continuo</h2>
+<h2>5. Monitoraggio e miglioramento continuo</h2>
 <p>Lo studio si impegna in un processo continuo di miglioramento della qualità attraverso:</p>
 <ul>
 <li>raccolta del feedback da parte dei pazienti (questionari cartacei o digitali);</li>
@@ -245,7 +240,7 @@ ${c.equipmentSectionHtml}
 </ul>
 <p>Riferimento revisione documentale: <strong>${c.revision}</strong>.</p>
 
-<h2>7. Conclusioni</h2>
+<h2>6. Conclusioni</h2>
 <p>Una gestione strutturata ed efficiente delle risorse è essenziale per garantire la qualità del servizio odontoiatrico offerto ai pazienti. Il presente documento costituisce una guida pratica per il personale, promuovendo qualità, sicurezza e miglioramento continuo in ogni area dello studio.</p>
 `
   );
@@ -489,9 +484,10 @@ const TECH_SPECS: Record<number, TechnicalSpec> = {
     matter: "caratteristiche ambientali e accessibilità",
     laws: "normativa urbanistica ed edilizia applicabile, Codice dei beni culturali ove pertinente, D.Lgs. 81/2008 per profili connessi, riferimenti regionali per l’accessibilità e l’eliminazione delle barriere",
     generalHtml: `
-<p>Il requisito riguarda la <strong>conformità ambientale</strong> dei locali (illuminazione naturale/artificiale, finiture, percorsi, igienizzabilità) e l’<strong>accessibilità</strong> per utenti con ridotta capacità motoria o sensoriale, in coerenza con i criteri tecnici vigenti e con la tipologia di attività sanitaria ambulatoriale.</p>
-<p>Per il GdV è rilevante che esistano: <strong>elaborati grafici aggiornati</strong> (planimetrie, relazioni a fine lavori ove prodotte), <strong>certificazioni o attestazioni</strong> rilasciate da professionisti abilitati quando richieste, e <strong>evidenze di manutenzione</strong> che preservino nel tempo le condizioni dichiarate.</p>
-<p>Nelle monopresidio la documentazione è spesso snella ma deve essere <strong>tracciabile</strong>: indicare almeno anno di riferimento degli elaborati, eventuali titoli abilitativi edilizi e prescrizioni ancora vincolanti.</p>
+<p>Il presente allegato documenta le <strong>caratteristiche ambientali</strong> dei locali in cui opera la struttura e le soluzioni adottate per l’<strong>accessibilità</strong> e l’igiene ambientale, distinto dall’inventario delle apparecchiature (documento n. 10).</p>
+<p><strong>Ambito:</strong> finiture, illuminazione, percorsi interni, servizi igienici per utenti e personale, segnaletica, eventuali ausili (rampe, maniglioni, porte a larghezza adeguata), rapporto con la viabilità esterna e parcheggi ove presenti.</p>
+<p><strong>Documentazione attesa in sede:</strong> planimetrie aggiornate con destinazione d’uso dei locali; titoli abilitativi edilizi o certificati di agibilità; relazioni a fine lavori o relazioni tecniche per interventi rilevanti; eventuali attestazioni di conformità per eliminazione barriere (collegamento al documento n. 19 ove distinto).</p>
+<p><strong>Manutenzione:</strong> programma di ordinaria manutenzione di finiture e impianti che incidono su comfort e sicurezza (es. illuminazione di emergenza se di competenza, non estintori che restano nel capitolo antincendio).</p>
 `,
   },
   14: {
@@ -500,7 +496,7 @@ const TECH_SPECS: Record<number, TechnicalSpec> = {
     laws: "D.P.R. 151/2011 e norme tecniche di prevenzione incendi, schede della attività e prescrizioni dei VVF ove applicabili, D.Lgs. 81/2008",
     generalHtml: `
 <p>La struttura mantiene in sede la documentazione richiesta dalla normativa di prevenzione incendi per la tipologia di attività svolta (schede, planimetrie con vie di esodo ove richieste, dotazioni estintive, adempimenti verso i Vigili del Fuoco ove applicabili).</p>
-<p>Per la <strong>manutenzione ordinaria e straordinaria dei presidi antincendio</strong> si fa riferimento al D.M. 3 luglio 2021 e s.m.i.; l’estremo della ditta manutentore, se dichiarato nel modulo, è riportato nel paragrafo sulle attrezzature del presente documento tecnico.</p>
+<p>Per la <strong>manutenzione ordinaria e straordinaria dei presidi antincendio</strong> si fa riferimento al D.M. 3 luglio 2021 e s.m.i.; l’estremo della ditta manutentore, se dichiarato nel modulo, è richiamato nel fascicolo (anagrafica fornitori / documento 11).</p>
 `,
   },
   15: {
@@ -626,6 +622,7 @@ ${c.insuranceSectionHtml}
 <p>Il titolare verifica periodicamente <strong>scadenze</strong>, <strong>massimali</strong>, <strong>esclusioni</strong> e <strong>franchigie</strong>, aggiornando il fascicolo e informando il personale ove necessario. In caso di sinistro o contenzioso, la documentazione contrattuale e le comunicazioni alla compagnia sono conservate secondo policy interna e tempi di prescrizione.</p>
 <h2>Integrazione con altri requisiti A1</h2>
 <p>La copertura assicurativa si collega alla <strong>carta dei servizi</strong>, alla <strong>gestione reclami</strong> e al <strong>piano rischi</strong>; ogni modifica contrattuale rilevante è registrata nella revisione <strong>${c.revision}</strong>.</p>
+${insuranceAdhesionFormBlock(c)}
 ` +
     sharedClosing(c)
   );
@@ -635,17 +632,35 @@ export function doc26ServiceCharter(c: BodyContext): string {
   return (
     leadArticulatedDoc(c, "1A.05.03.01", "Carta dei servizi") +
     `
-<h2>Parte generale — finalità e contenuto minimo</h2>
-<p>La carta dei servizi è lo strumento di <strong>trasparenza</strong> verso l’utente: illustra <strong>prestazioni</strong>, <strong>orari</strong>, <strong>modalità di accesso e prenotazione</strong>, <strong>tempi di attesa dichiarati</strong> (ove comunicabili), <strong>standard di qualità percepita</strong>, <strong>canali di feedback</strong> (reclami, suggerimenti) e <strong>tutele</strong> (privacy, continuità, rimedi).</p>
-<p>Per le strutture monopresidio la carta può essere sintetica ma deve essere <strong>effettivamente disponibile</strong> in sede (es. esposizione in sala d’attesa, fascicolo informativo, sito o QR) e <strong>allineata</strong> alle procedure interne realmente applicate.</p>
-<h2>Prestazioni, organizzazione e comunicazione al pubblico</h2>
-<p><strong>${c.studioName}</strong> eroga prestazioni sanitarie ambulatoriali coerenti con le competenze professionali del titolare e con la classificazione della struttura. Le informazioni sono rese disponibili in sala d’attesa e su supporti digitali ove adottati; eventuali <strong>limitazioni</strong> (es. urgenze, specialistica non erogata) sono dichiarate in modo chiaro.</p>
-<h2>Orari, accesso e tempi</h2>
-<p>Sono indicati gli <strong>orari di apertura al pubblico</strong>, le modalità di <strong>prenotazione</strong> (telefono, sportello, digitale), le politiche per le <strong>disdette</strong> e, ove realisticamente stimabili, i <strong>tempi di attesa</strong> o le priorità per le urgenze. Le variazioni stagionali o straordinarie sono comunicate con mezzi idonei (avviso in sede, sito, segreteria).</p>
-<h2>Tariffe, trasparenza economica e diritti del paziente</h2>
-<p>Le informazioni su <strong>onorari</strong>, eventuali <strong>acconti</strong>, <strong>modalità di pagamento</strong> e <strong>note informative</strong> su prestazioni complesse sono rese in modo comprensibile prima o al momento della prestazione, nel rispetto della deontologia e della normativa applicabile.</p>
-<h2>Reclami, miglioramento e revisione</h2>
-<p>I reclami sono gestiti secondo la procedura dedicata (requisito <strong>1A.01.06.01</strong>); la carta è aggiornata a seguito di modifiche organizzative, tariffarie o di offerta assistenziale. La revisione documentale di riferimento è <strong>${c.revision}</strong>.</p>
+<h2>Testo tipo — Carta dei servizi (da personalizzare e stampare per la sala d’attesa)</h2>
+<p><strong>${c.studioName}</strong> — <strong>${c.address}</strong>. Titolare: <strong>${c.ownerName}</strong>.</p>
+<p>La presente carta illustra, in forma sintetica e comprensibile, <strong>cosa può aspettarsi l’utente</strong> dall’accesso alle prestazioni dello studio, i <strong>canali di comunicazione</strong>, i <strong>diritti</strong> e le <strong>modalità di tutela</strong>.</p>
+
+<h2>1. Missione e ambito delle prestazioni</h2>
+<p>Lo studio eroga <strong>prestazioni odontoiatriche ambulatoriali</strong> nelle competenze professionali del titolare e dei collaboratori eventualmente presenti. Le prestazioni non erogate o soggette a lista d’attesa sono dichiarate esplicitamente in sede. Le <strong>urgenze odontoiatriche</strong> sono gestite secondo priorità clinica e disponibilità, nel rispetto delle risorse della monopresidio.</p>
+
+<h2>2. Orari, prenotazione e accesso</h2>
+<p><strong>Orari di apertura al pubblico:</strong> <em>(indicare giorni e fascia oraria effettiva)</em>. <strong>Prenotazione:</strong> telefono, sportello, o strumenti digitali ove attivati. <strong>Disdette:</strong> si invitano gli utenti a comunicare con congruo anticipo per liberare lo slot. <strong>Puntualità:</strong> lo studio si impegna a ridurre l’attesa; eventuali ritardi sono comunicati in accoglienza.</p>
+
+<h2>3. Qualità, sicurezza e continuità</h2>
+<p>Il servizio è erogato applicando <strong>protocolli clinici</strong>, <strong>norme di igiene e sterilizzazione</strong>, <strong>trattamento dei dati personali e sanitari</strong> secondo il GDPR. In caso di <strong>non conformità</strong> o segnalazione, la struttura avvia verifiche interne e, ove necessario, azioni correttive documentate nel sistema qualità.</p>
+
+<h2>4. Trasparenza economica</h2>
+<p>Prima o al momento della prestazione sono fornite <strong>informazioni su onorari</strong>, eventuali <strong>alternative terapeutiche</strong> e <strong>modalità di pagamento</strong>. Per prestazioni complesse si utilizzano <strong>consensi informati</strong> e preventivi ove applicabile.</p>
+
+<h2>5. Diritti dell’utente</h2>
+<ul>
+<li>Diritto a informazioni chiare sullo stato di salute e sul piano di cura.</li>
+<li>Diritto alla <strong>privacy</strong> e alla riservatezza delle informazioni cliniche.</li>
+<li>Diritto di <strong>accedere</strong> alla propria documentazione clinica secondo normativa.</li>
+<li>Diritto di presentare <strong>reclami, osservazioni e suggerimenti</strong> (procedura 1A.01.06.01) e di ricevere risposta motivata nei tempi congrui.</li>
+</ul>
+
+<h2>6. Come contattarci e presentare un reclamo</h2>
+<p>Recapiti in sede, e-mail / PEC ove attivata, orari di sportello. Per i reclami si può utilizzare il <strong>modulo cartaceo</strong> disponibile in studio o le modalità indicate nella procedura dedicata. Ogni pratica è <strong>protocollata</strong>.</p>
+
+<h2>7. Aggiornamento</h2>
+<p>La carta è revisionata con la documentazione di qualità. Riferimento: <strong>${c.revision}</strong>.</p>
 ` +
     sharedClosing(c)
   );
@@ -701,8 +716,24 @@ export function doc29RiskPlan(c: BodyContext): string {
 </ul>
 <h2>Riesame e aggiornamento</h2>
 <p>Revisione almeno <strong>annuale</strong> o dopo eventi significativi, sinistri, ispezioni o introdotte nuove tecnologie. Revisione documentale: <strong>${c.revision}</strong>.</p>
+<h2>Registro sintetico dei rischi (modello — da compilare)</h2>
+<table class="data-table" style="width:100%;border-collapse:collapse;font-size:9.5pt;margin:0.55rem 0;">
+<thead><tr>
+<th style="border:1px solid #333;padding:0.25rem;">Rischio / scenario</th>
+<th style="border:1px solid #333;padding:0.25rem;">Probabilità (bassa/media/alta)</th>
+<th style="border:1px solid #333;padding:0.25rem;">Impatto</th>
+<th style="border:1px solid #333;padding:0.25rem;">Misure esistenti</th>
+<th style="border:1px solid #333;padding:0.25rem;">Azioni residue / responsabile</th>
+</tr></thead>
+<tbody>
+<tr><td style="border:1px solid #333;padding:0.28rem;">Infezione incrociata / sterilizzazione</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td></tr>
+<tr><td style="border:1px solid #333;padding:0.28rem;">Incidente strumentale / caduta</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td></tr>
+<tr><td style="border:1px solid #333;padding:0.28rem;">Perdita dati / continuità IT</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td></tr>
+<tr><td style="border:1px solid #333;padding:0.28rem;">Esposizione biologica / chimica</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td></tr>
+</tbody>
+</table>
 <h2>Documentazione correlata (DVR e allegati)</h2>
-<p>Il presente piano si integra con il <strong>Documento di valutazione dei rischi</strong> (DVR) ai sensi del D.Lgs. 81/2008 e con le valutazioni specifiche (chimico, biologico, rumore, radiazioni ove presenti). Le <strong>schede dettagliate</strong>, le <strong>matrici di rischio complete</strong> e gli <strong>allegati fotografici o planimetrici</strong> restano acquisiti nel fascicolo aziendale cartaceo o digitale e sono messi a disposizione del GdV su richiesta.</p>
+<p>Il presente piano si integra con il <strong>Documento di valutazione dei rischi</strong> (D.Lgs. 81/2008) e con le valutazioni specifiche. Le matrici complete, le schede per ambiente e gli allegati restano nel fascicolo aziendale e sono esibiti al GdV su richiesta.</p>
 ` +
     sharedClosing(c)
   );
@@ -714,7 +745,7 @@ export function doc30Cleaning(c: BodyContext): string {
     `
 <h2>Parte generale — obiettivi e riferimenti</h2>
 <p>La procedura mira a garantire <strong>igiene ambientale</strong>, <strong>prevenzione delle infezioni</strong> correlate all’assistenza e, ove richiesto, <strong>tracciabilità</strong> delle operazioni nelle sale e nelle aree comuni di <strong>${c.studioName}</strong>, in coerenza con linee guida nazionali e regionali e con il profilo di rischio della struttura.</p>
-<p>La sanificazione delle superfici non sostituisce la <strong>sterilizzazione strumentale</strong> ma ne è complementare su <strong>ambienti</strong> e <strong>superfici</strong>.</p>
+<p>La sanificazione delle superfici non sostituisce la <strong>sterilizzazione strumentale</strong> ma ne è complementare su <strong>ambienti</strong> e <strong>superfici</strong>. Le misure si integrano con il <strong>protocollo di isolamento e precauzioni</strong> per pazienti con patologie trasmissibili (<strong>documento n. 7</strong>) e con il <strong>piano rischi</strong> (documento n. 29).</p>
 <h2>Piano per zone e frequenze</h2>
 <p>Piani di pulizia per <strong>sale operatorie</strong>, <strong>area di sterilizzazione</strong>, <strong>segreteria e sala d’attesa</strong>, <strong>servizi igienici</strong>, <strong>magazzino</strong>: per ciascuna area indicare <strong>frequenza</strong>, <strong>metodo</strong> (meccanica, detergente, disinfettante ammesso), <strong>responsabile</strong> (interno o ditta esterna) e <strong>DPI</strong>.</p>
 <h2>Prodotti, schedatura e sicurezza chimica</h2>
@@ -746,7 +777,7 @@ export function doc31Biological(c: BodyContext): string {
     `
 <h2>Parte generale — precauzioni standard e contesto normativo</h2>
 <p>La procedura implementa le <strong>precauzioni standard</strong> (igiene delle mani, DPI, prevenzione tagli e schizzi, gestione dei rifiuti, disinfezione ambienti) e la gestione degli <strong>incidenti percutanei</strong> o delle esposizioni a materiale biologico, in coerenza con D.Lgs. 81/2008 e buone pratiche professionali odontoiatriche.</p>
-<p>Integra la <strong>sorveglianza sanitaria</strong> ove dovuta, la <strong>formazione obbligatoria</strong> e la <strong>vaccinoprofilassi</strong> secondo indicazioni del medico competente.</p>
+<p>Integra la <strong>sorveglianza sanitaria</strong> ove dovuta, la <strong>formazione obbligatoria</strong> e la <strong>vaccinoprofilassi</strong> secondo indicazioni del medico competente. Per le <strong>sostanze chimiche</strong> (disinfettanti, monomeri, amalgama ove presente) si consultano le <strong>schede di sicurezza</strong> e si rispettano i limiti di stoccaggio; tabella riepilogativa consigliata in allegato operativo.</p>
 <h2>Flusso in caso di incidente (schema)</h2>
 <ol>
 <li>Interruzione sicura dell’attività, messa in sicurezza del luogo.</li>
@@ -783,6 +814,19 @@ export function doc32NearMiss(c: BodyContext): string {
 <p>Allineamento con il <strong>piano rischi</strong> (1A.06.02.01), <strong>gestione reclami</strong> (1A.01.06.01), <strong>report criticità</strong> (1A.05.03.05) e formazione periodica. Revisione: <strong>${c.revision}</strong>.</p>
 <h2>Registro eventi (modello cartaceo / gestionale)</h2>
 <p>Si consiglia di tenere un <strong>registro strutturato</strong> (data, descrizione sintetica, classificazione near miss / avverso / sentinella, azioni immediate, analisi cause, azioni correttive, responsabile, stato) con accesso riservato al titolare e al personale autorizzato, nel rispetto della privacy. Le copie cartacee o gli export digitali sono conservati per i tempi definiti dalla policy interna.</p>
+<table class="data-table" style="width:100%;border-collapse:collapse;font-size:9pt;margin:0.55rem 0;">
+<thead><tr>
+<th style="border:1px solid #333;padding:0.22rem;">Data</th>
+<th style="border:1px solid #333;padding:0.22rem;">Breve descrizione</th>
+<th style="border:1px solid #333;padding:0.22rem;">Classe</th>
+<th style="border:1px solid #333;padding:0.22rem;">Azioni</th>
+<th style="border:1px solid #333;padding:0.22rem;">Stato</th>
+</tr></thead>
+<tbody>
+<tr><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;"><em>es. strumento scivolato verso campo sterile — intercettato</em></td><td style="border:1px solid #333;padding:0.28rem;">Near miss</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td></tr>
+<tr><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td></tr>
+</tbody>
+</table>
 ` +
     sharedClosing(c)
   );

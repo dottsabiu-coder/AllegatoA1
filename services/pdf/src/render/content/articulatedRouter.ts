@@ -23,7 +23,7 @@ import {
 } from "./longFormBodies.js";
 import {
   complaintIntakeFormBlock,
-  disserviziProcessTableBlock,
+  maintenanceVerificationPlanBlock,
   pianoEmergenzeEstesoBlock,
   protocolloIsolamentoEstesoBlock,
 } from "./blocksForms.js";
@@ -67,6 +67,7 @@ function doc08ClinicalDocs(c: ReturnType<typeof buildBodyContext>, doc: Resolved
         h: "6. Controllo di qualità documentale",
         p: [
           "Controlli periodici (campionamenti su cartelle, verifiche su completezza consensi e referti) alimentano il miglioramento continuo e il piano rischi. Non conformità ricorrenti attivano azioni correttive.",
+          "Check-list interna (trimestrale o semestrale): completezza anamnesi e consensi; referti esterni associati alla cartella; tracciabilità firme e date; coerenza tra piano di cura e prestazioni registrate; archiviazione consensi privacy aggiornata.",
         ],
       },
       {
@@ -80,7 +81,8 @@ function doc08ClinicalDocs(c: ReturnType<typeof buildBodyContext>, doc: Resolved
 }
 
 function doc09MaintenanceCharge(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocument): string {
-  return doc03to07Block(c, doc, [
+  return (
+    doc03to07Block(c, doc, [
     {
       h: "1. Finalità e ambito dell’incarico",
       p: [
@@ -112,7 +114,26 @@ function doc09MaintenanceCharge(c: ReturnType<typeof buildBodyContext>, doc: Res
         "È tenuto un registro o archivio contrattuale degli interventi di manutenzione con date, esiti e firme o rapportini, consultabile in sede di verifica.",
       ],
     },
-  ]);
+    {
+      h: "6. Matrice operativa incarico — attività",
+      p: [
+        "Schema di riferimento per verifiche in sede GdV (integrare con nomi effettivi):",
+      ],
+    },
+  ]) +
+    `<table class="data-table" style="width:100%;border-collapse:collapse;font-size:9.5pt;margin:0.5rem 0;">
+<thead><tr>
+<th style="border:1px solid #333;padding:0.28rem;">Attività</th>
+<th style="border:1px solid #333;padding:0.28rem;">Cadenza</th>
+<th style="border:1px solid #333;padding:0.28rem;">Evidenza richiesta</th>
+<th style="border:1px solid #333;padding:0.28rem;">Responsabile</th>
+</tr></thead>
+<tbody>
+<tr><td style="border:1px solid #333;padding:0.3rem;">Verifica scadenze manutenzioni legali (estintori, impianti ove di competenza)</td><td style="border:1px solid #333;padding:0.3rem;">Almeno annuale</td><td style="border:1px solid #333;padding:0.3rem;">Contratti, rapportini, etichette</td><td style="border:1px solid #333;padding:0.3rem;">Resp. manutenzione</td></tr>
+<tr><td style="border:1px solid #333;padding:0.3rem;">Aggiornamento registro dopo sostituzione apparecchiature</td><td style="border:1px solid #333;padding:0.3rem;">Evento</td><td style="border:1px solid #333;padding:0.3rem;">Nota su inventario + doc. fabbrica</td><td style="border:1px solid #333;padding:0.3rem;">Titolare</td></tr>
+<tr><td style="border:1px solid #333;padding:0.3rem;">Riesame nominativo responsabile manutenzione</td><td style="border:1px solid #333;padding:0.3rem;">Annuale</td><td style="border:1px solid #333;padding:0.3rem;">Verbale / lettera incarico</td><td style="border:1px solid #333;padding:0.3rem;">Titolare</td></tr>
+</tbody></table>`
+  );
 }
 
 function doc10Inventory(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocument): string {
@@ -146,7 +167,7 @@ function doc10Inventory(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDoc
       {
         h: "5. Elenco dichiarato (gestionale)",
         p: [
-          "Di seguito l’estratto generato dai dati inseriti nel modulo:",
+          "Di seguito l’elenco unico delle apparecchiature biomediche e ausiliarie censite per l’Allegato A1 (allineato ai documenti 11 e 12 e alle modifiche organizzative concordate):",
         ],
       },
       {
@@ -160,83 +181,81 @@ function doc10Inventory(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDoc
 }
 
 function doc11MaintenancePlan(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocument): string {
-  return (
-    doc03to07Block(c, doc, [
-      {
-        h: "1. Ambito del piano",
-        p: [
-          "Il piano copre <strong>strutture edili</strong>, <strong>impianti tecnologici</strong> (elettrico, termico, idraulico ove presenti), <strong>apparecchiature biomediche</strong> e <strong>ausiliarie</strong>, distinguendo <strong>manutenzione ordinaria</strong>, <strong>straordinaria</strong> e <strong>verifiche legali</strong> obbligate (estintori, impianti elettrici, dispositivi di sicurezza, ecc.).",
-        ],
-      },
-      {
-        h: "2. Frequenze, responsabilità e fornitori",
-        p: [
-          "Per ciascuna tipologia di bene o impianto sono definite <strong>periodicità</strong>, <strong>responsabile dell’esecuzione</strong> (interno o esterno) e <strong>criteri di accettazione</strong> dell’intervento. I contratti con ditte sono conservati con estremi identificativi e contatti.",
-        ],
-      },
-      {
-        h: "3. Registrazione degli interventi e non conformità",
-        p: [
-          "Ogni intervento rilevante è documentato (data, esito, firma o rapportino). Le non conformità rilevate (guasti ripetuti, ritardi, rischi per la sicurezza) attivano azioni correttive e possono essere segnalate nel sistema near miss / rischi ove applicabile.",
-        ],
-      },
-      {
-        h: "4. Evidenze per il GdV",
-        p: [
-          "Il fascicolo contiene <strong>contratti</strong>, <strong>rapportini</strong>, <strong>scadenze</strong> e, ove richiesto, <strong>certificati di verifica</strong> aggiornati. L’inventario sottostante supporta la congruenza tra beni censiti e piani di intervento.",
-        ],
-      },
-      {
-        h: "5. Inventario attrezzature (riferimento incrociato)",
-        p: [
-          "Tabella aggiornata dal gestionale:",
-        ],
-      },
-      {
-        h: "6. Collegamento con la figura di responsabilità manutentiva",
-        p: [
-          "Il piano è coordinato con il documento sull’incarico di manutenzione (requisito collegato): stesso soggetto o interfaccia definita tra titolare, interni ed esterni.",
-        ],
-      },
-    ]) + c.equipmentSectionHtml
-  );
+  return doc03to07Block(c, doc, [
+    {
+      h: "1. Ambito del piano",
+      p: [
+        "Il piano copre <strong>strutture edili</strong>, <strong>impianti tecnologici</strong> (elettrico, termico, idraulico ove presenti), <strong>apparecchiature biomediche</strong> e <strong>ausiliarie</strong>, distinguendo <strong>manutenzione ordinaria</strong>, <strong>straordinaria</strong> e <strong>verifiche legali</strong> obbligate (estintori, impianti elettrici, dispositivi di sicurezza, ecc.).",
+      ],
+    },
+    {
+      h: "2. Frequenze, responsabilità e fornitori",
+      p: [
+        "Per ciascuna tipologia di bene o impianto sono definite <strong>periodicità</strong>, <strong>responsabile dell’esecuzione</strong> (interno o esterno) e <strong>criteri di accettazione</strong> dell’intervento. I contratti con ditte sono conservati con estremi identificativi e contatti.",
+      ],
+    },
+    {
+      h: "3. Registrazione degli interventi e non conformità",
+      p: [
+        "Ogni intervento rilevante è documentato (data, esito, firma o rapportino). Le non conformità rilevate (guasti ripetuti, ritardi, rischi per la sicurezza) attivano azioni correttive e possono essere segnalate nel sistema near miss / rischi ove applicabile.",
+      ],
+    },
+    {
+      h: "4. Evidenze per il GdV",
+      p: [
+        "Il fascicolo contiene <strong>contratti</strong>, <strong>rapportini</strong>, <strong>scadenze</strong> e, ove richiesto, <strong>certificati di verifica</strong> aggiornati. L’elenco delle apparecchiature è riportato nel <strong>documento n. 10</strong> (inventario), cui si rimanda per coerenza con i piani di intervento.",
+      ],
+    },
+    {
+      h: "5. Collegamento con la figura di responsabilità manutentiva",
+      p: [
+        "Il piano è coordinato con il documento sull’incarico di manutenzione (requisito collegato): stesso soggetto o interfaccia definita tra titolare, interni ed esterni.",
+      ],
+    },
+  ], { appendBeforeClosing: maintenanceVerificationPlanBlock() });
 }
 
 function doc12TechSheets(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocument): string {
-  return (
-    doc03to07Block(c, doc, [
-      {
-        h: "1. Finalità e accessibilità",
-        p: [
-          "La documentazione tecnica di fabbrica (manuali d’uso, <strong>dichiarazioni di conformità</strong>, <strong>certificati CE</strong> ove applicabili, schemi elettrici, bollettini del costruttore) è conservata in <strong>formato cartaceo e/o digitale</strong> e resa <strong>immediatamente disponibile</strong> agli operatori autorizzati e al responsabile della manutenzione.",
-        ],
-      },
-      {
-        h: "2. Contenuto minimo per tipologia",
-        p: [
-          "Per apparecchiature biomedicali: manuale utente, avvertenze di sicurezza, software e versioni ove rilevanti. Per strumentazione odontoiatrica: limiti d’uso, cicli di manutenzione consigliati dal costruttore, accessori omologati.",
-        ],
-      },
-      {
-        h: "3. Aggiornamenti, recall e comunicazioni del fabbricante",
-        p: [
-          "La struttura conserva le <strong>comunicazioni</strong> del fabbricante (aggiornamenti, recall, field safety notices) e documenta le azioni intraprese. È utile associare ogni apparecchiatura a un <strong>fascicolo digitale/cartaceo</strong> dedicato.",
-        ],
-      },
-      {
-        h: "4. Correlazione con l’inventario",
-        p: [
-          "L’elenco seguente consente di verificare la coerenza tra beni presenti e documentazione richiesta:",
-        ],
-      },
-      {
-        h: "5. Recall, field safety notices e aggiornamenti firmware",
-        p: [
-          "Per apparecchiature regolate come dispositivi medici o assimilabili, si conservano le comunicazioni del fabbricante su recall, correttivi e aggiornamenti software rilevanti per la sicurezza, con evidenza delle azioni intraprese.",
-        ],
-      },
-    ]) + c.equipmentSectionHtml
-  );
+  return doc03to07Block(c, doc, [
+    {
+      h: "1. Finalità e accessibilità",
+      p: [
+        "La documentazione tecnica di fabbrica (manuali d’uso, <strong>dichiarazioni di conformità</strong>, <strong>certificati CE</strong> ove applicabili, schemi elettrici, bollettini del costruttore) è conservata in <strong>formato cartaceo e/o digitale</strong> e resa <strong>immediatamente disponibile</strong> agli operatori autorizzati e al responsabile della manutenzione, in adempimento al requisito <strong>${escapeHtml(doc.code)}</strong>.",
+      ],
+    },
+    {
+      h: "2. Contenuto minimo per tipologia di apparecchiatura",
+      p: [
+        "<strong>Dispositivi medici / apparecchiature radiologiche:</strong> manuale utente, dichiarazione di conformità, etichettatura UDI ove richiesta, certificati di installazione o collaudo ove prodotti.",
+        "<strong>Strumentazione odontoiatrica e ausiliaria:</strong> limiti d’uso, avvertenze di sicurezza, elenco accessori omologati, intervalli di manutenzione consigliati dal costruttore.",
+        "<strong>Software e firmware:</strong> versione installata, note di rilascio rilevanti per la sicurezza, log di aggiornamento ove applicabile.",
+      ],
+    },
+    {
+      h: "3. Archiviazione, indicizzazione e tracciabilità",
+      p: [
+        "Per ogni bene del <strong>documento n. 10</strong> si mantiene un fascicolo (cartella digitale o cartacea) con manuali, certificati e corrispondenza con il fornitore. In sede di verifica deve essere possibile risalire da matricola / modello alla documentazione relativa entro tempi congrui.",
+      ],
+    },
+    {
+      h: "4. Rinvio all’inventario",
+      p: [
+        "Non si ripete in questo documento l’elenco delle apparecchiature: si rimanda al <strong>documento n. 10</strong> per l’inventario aggiornato e al <strong>documento n. 11</strong> per le verifiche e manutenzioni programmate.",
+      ],
+    },
+    {
+      h: "5. Recall, field safety notices (FSN) e aggiornamenti",
+      p: [
+        "Le comunicazioni del fabbricante su recall, correttivi di sicurezza e FSN sono conservate con evidenza della data di ricezione, della valutazione del rischio e delle azioni intraprese (es. messa fuori servizio, sostituzione, aggiornamento software).",
+      ],
+    },
+    {
+      h: "6. Responsabilità e revisione",
+      p: [
+        "Il titolare o il responsabile della manutenzione verifica periodicamente la completezza dei fascicoli tecnici dopo acquisti o sostituzioni. Riferimento revisione documentale: <strong>${c.revision}</strong>.",
+      ],
+    },
+  ]);
 }
 
 function doc03Quality(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocument): string {
@@ -275,9 +294,7 @@ function doc03Quality(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocum
         "Il titolare riesamina almeno annualmente gli obiettivi di qualità e approva piani di miglioramento. Il programma si integra con reclami (1A.01.06.01), carta dei servizi (1A.05.03.01) e report su criticità (1A.05.03.05).",
       ],
     },
-  ],
-    { appendBeforeClosing: disserviziProcessTableBlock(c) }
-  );
+  ]);
 }
 
 function doc04Complaints(c: ReturnType<typeof buildBodyContext>, doc: ResolvedDocument): string {
