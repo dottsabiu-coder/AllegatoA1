@@ -3,6 +3,11 @@ import { escapeHtml } from "../escape.js";
 import type { BodyContext } from "./contextBuilder.js";
 import { intestazioneRequisitoSpecifico } from "./normativePreamble.js";
 import { customerSatisfactionQuestionnaireBlock } from "./teresi/teresiShared.js";
+import { teresiDoc26MainHtml } from "./teresi/doc26Body.js";
+import { teresiDoc29MainHtml } from "./teresi/doc29Body.js";
+import { teresiDoc30MainHtml } from "./teresi/doc30Body.js";
+import { teresiDoc31MainHtml } from "./teresi/doc31Body.js";
+import { teresiDoc32MainHtml } from "./teresi/doc32Body.js";
 
 type TechnicalSpec = {
   label: string;
@@ -632,23 +637,7 @@ ${c.insuranceSectionHtml}
 }
 
 export function doc26ServiceCharter(c: BodyContext): string {
-  return (
-    leadArticulatedDoc(c, "1A.05.03.01", "Carta dei servizi") +
-    `
-<h2>Parte generale — finalità e contenuto minimo</h2>
-<p>La carta dei servizi è lo strumento di <strong>trasparenza</strong> verso l’utente: illustra <strong>prestazioni</strong>, <strong>orari</strong>, <strong>modalità di accesso e prenotazione</strong>, <strong>tempi di attesa dichiarati</strong> (ove comunicabili), <strong>standard di qualità percepita</strong>, <strong>canali di feedback</strong> (reclami, suggerimenti) e <strong>tutele</strong> (privacy, continuità, rimedi).</p>
-<p>Per le strutture monopresidio la carta può essere sintetica ma deve essere <strong>effettivamente disponibile</strong> in sede (es. esposizione in sala d’attesa, fascicolo informativo, sito o QR) e <strong>allineata</strong> alle procedure interne realmente applicate.</p>
-<h2>Prestazioni, organizzazione e comunicazione al pubblico</h2>
-<p><strong>${c.studioName}</strong> eroga prestazioni sanitarie ambulatoriali coerenti con le competenze professionali del titolare e con la classificazione della struttura. Le informazioni sono rese disponibili in sala d’attesa e su supporti digitali ove adottati; eventuali <strong>limitazioni</strong> (es. urgenze, specialistica non erogata) sono dichiarate in modo chiaro.</p>
-<h2>Orari, accesso e tempi</h2>
-<p>Sono indicati gli <strong>orari di apertura al pubblico</strong>, le modalità di <strong>prenotazione</strong> (telefono, sportello, digitale), le politiche per le <strong>disdette</strong> e, ove realisticamente stimabili, i <strong>tempi di attesa</strong> o le priorità per le urgenze. Le variazioni stagionali o straordinarie sono comunicate con mezzi idonei (avviso in sede, sito, segreteria).</p>
-<h2>Tariffe, trasparenza economica e diritti del paziente</h2>
-<p>Le informazioni su <strong>onorari</strong>, eventuali <strong>acconti</strong>, <strong>modalità di pagamento</strong> e <strong>note informative</strong> su prestazioni complesse sono rese in modo comprensibile prima o al momento della prestazione, nel rispetto della deontologia e della normativa applicabile.</p>
-<h2>Reclami, miglioramento e revisione</h2>
-<p>I reclami sono gestiti secondo la procedura dedicata (requisito <strong>1A.01.06.01</strong>); la carta è aggiornata a seguito di modifiche organizzative, tariffarie o di offerta assistenziale. La revisione documentale di riferimento è <strong>${c.revision}</strong>.</p>
-` +
-    sharedClosing(c)
-  );
+  return leadArticulatedDoc(c, "1A.05.03.01", "Carta dei servizi") + teresiDoc26MainHtml(c) + sharedClosing(c);
 }
 
 export function doc28ReportCsat(c: BodyContext): string {
@@ -686,23 +675,25 @@ ${customerSatisfactionQuestionnaireBlock()}
 export function doc29RiskPlan(c: BodyContext): string {
   return (
     leadArticulatedDoc(c, "1A.06.02.01", "Piano aziendale per la gestione del rischio") +
+    teresiDoc29MainHtml(c) +
     `
-<h2>Parte generale — modello di gestione del rischio</h2>
-<p>Il piano integra rischi <strong>clinici</strong>, <strong>organizzativi</strong>, <strong>igienico-sanitari</strong>, <strong>tecnologici</strong> e <strong>reputazionali</strong> in un’ottica proporzionata alla monopresidio, ispirandosi a principi di <strong>ISO 31000</strong> (framework generale) adattati alla scala operativa.</p>
-<p>Il titolare coordina <strong>identificazione</strong>, <strong>valutazione</strong>, <strong>trattamento</strong> (eliminazione, riduzione, trasferimento, accettazione controllata) e <strong>monitoraggio</strong>; il personale è coinvolto nella segnalazione e nell’applicazione delle misure.</p>
-<h2>Matrice probabilità / impatto e priorità</h2>
-<p>I rischi sono classificati per <strong>probabilità</strong> e <strong>impatto</strong> sul paziente, sul personale e sulla conformità; ne deriva una <strong>priorità</strong> di intervento e un piano di azioni con responsabili e scadenze. Sono collegati il <strong>piano emergenze</strong>, la <strong>sicurezza sul lavoro</strong> (DVR), la <strong>sicurezza informatica</strong> e la <strong>gestione del materiale biologico</strong>.</p>
-<h2>Ambiti tipici in studio odontoiatrico</h2>
-<ul>
-<li>Infezione incrociata, sterilizzazione, gestione scarti e DPI.</li>
-<li>Incidenti strumentali, cadute, sostanze chimiche.</li>
-<li>Continuità operativa (blackout, guasti apparecchiature, perdita dati).</li>
-<li>Comunicazione e consenso; errori di documentazione clinica.</li>
-</ul>
-<h2>Riesame e aggiornamento</h2>
-<p>Revisione almeno <strong>annuale</strong> o dopo eventi significativi, sinistri, ispezioni o introdotte nuove tecnologie. Revisione documentale: <strong>${c.revision}</strong>.</p>
-<h2>Documentazione correlata (DVR e allegati)</h2>
-<p>Il presente piano si integra con il <strong>Documento di valutazione dei rischi</strong> (DVR) ai sensi del D.Lgs. 81/2008 e con le valutazioni specifiche (chimico, biologico, rumore, radiazioni ove presenti). Le <strong>schede dettagliate</strong>, le <strong>matrici di rischio complete</strong> e gli <strong>allegati fotografici o planimetrici</strong> restano acquisiti nel fascicolo aziendale cartaceo o digitale e sono messi a disposizione del GdV su richiesta.</p>
+<h2>Registro sintetico dei rischi (matrice — da compilare in sede)</h2>
+<table class="data-table" style="width:100%;border-collapse:collapse;font-size:9.5pt;margin:0.55rem 0;">
+<thead><tr>
+<th style="border:1px solid #333;padding:0.25rem;">Rischio / scenario</th>
+<th style="border:1px solid #333;padding:0.25rem;">Probabilità</th>
+<th style="border:1px solid #333;padding:0.25rem;">Impatto</th>
+<th style="border:1px solid #333;padding:0.25rem;">Misure esistenti</th>
+<th style="border:1px solid #333;padding:0.25rem;">Azioni residue</th>
+</tr></thead>
+<tbody>
+<tr><td style="border:1px solid #333;padding:0.28rem;">Infezione incrociata / sterilizzazione</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td></tr>
+<tr><td style="border:1px solid #333;padding:0.28rem;">Incidente strumentale / caduta</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td></tr>
+<tr><td style="border:1px solid #333;padding:0.28rem;">Perdita dati / continuità IT</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td></tr>
+<tr><td style="border:1px solid #333;padding:0.28rem;">Esposizione biologica / chimica</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.28rem;">&nbsp;</td></tr>
+</tbody>
+</table>
+<p>Le schede dettagliate, il DVR e gli allegati probatori restano nel fascicolo di sede.</p>
 ` +
     sharedClosing(c)
   );
@@ -710,27 +701,21 @@ export function doc29RiskPlan(c: BodyContext): string {
 
 export function doc30Cleaning(c: BodyContext): string {
   return (
-    leadArticulatedDoc(c, "1A.06.02.02", "Pulizia e sanificazione degli ambienti") +
+    leadArticulatedDoc(c, "1A.06.02.02", "Procedura per la pulizia e sanificazione degli ambienti") +
+    teresiDoc30MainHtml(c) +
     `
-<h2>Parte generale — obiettivi e riferimenti</h2>
-<p>La procedura mira a garantire <strong>igiene ambientale</strong>, <strong>prevenzione delle infezioni</strong> correlate all’assistenza e, ove richiesto, <strong>tracciabilità</strong> delle operazioni nelle sale e nelle aree comuni di <strong>${c.studioName}</strong>, in coerenza con linee guida nazionali e regionali e con il profilo di rischio della struttura.</p>
-<p>La sanificazione delle superfici non sostituisce la <strong>sterilizzazione strumentale</strong> ma ne è complementare su <strong>ambienti</strong> e <strong>superfici</strong>.</p>
-<h2>Piano per zone e frequenze</h2>
-<p>Piani di pulizia per <strong>sale operatorie</strong>, <strong>area di sterilizzazione</strong>, <strong>segreteria e sala d’attesa</strong>, <strong>servizi igienici</strong>, <strong>magazzino</strong>: per ciascuna area indicare <strong>frequenza</strong>, <strong>metodo</strong> (meccanica, detergente, disinfettante ammesso), <strong>responsabile</strong> (interno o ditta esterna) e <strong>DPI</strong>.</p>
-<h2>Prodotti, schedatura e sicurezza chimica</h2>
-<p>Prodotti <strong>idonei all’uso</strong> previsto, <strong>schede di sicurezza</strong> disponibili, diluizioni corrette, stoccaggio sicuro; formazione del personale su rischi e etichettatura.</p>
-<h2>Verifiche, registrazioni e revisione</h2>
-<p>Checklist o registri ove applicabile; integrazione con piano rischi. Revisione documentale: <strong>${c.revision}</strong>.</p>
+<p>La sanificazione delle superfici non sostituisce la sterilizzazione strumentale; si integra con il protocollo di isolamento (<strong>documento n. 7</strong>) e con il piano rischi (<strong>documento n. 29</strong>).</p>
 <h2>Schema tipo — piano pulizia per ambiente (da adattare)</h2>
 <table class="data-table" style="width:100%;border-collapse:collapse;font-size:9pt;margin:0.6rem 0;">
 <thead><tr>
 <th style="border:1px solid #333;padding:0.25rem;">Ambiente / locale</th>
 <th style="border:1px solid #333;padding:0.25rem;">Frequenza</th>
-<th style="border:1px solid #333;padding:0.25rem;">Metodo / prodotto (classe)</th>
+<th style="border:1px solid #333;padding:0.25rem;">Metodo / prodotto</th>
 <th style="border:1px solid #333;padding:0.25rem;">Responsabile</th>
 </tr></thead>
 <tbody>
 <tr><td style="border:1px solid #333;padding:0.25rem;">Sala trattamento 1</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td></tr>
+<tr><td style="border:1px solid #333;padding:0.25rem;">Sala trattamento 2</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td></tr>
 <tr><td style="border:1px solid #333;padding:0.25rem;">Sterilizzazione</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td></tr>
 <tr><td style="border:1px solid #333;padding:0.25rem;">Sala d’attesa / segreteria</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td><td style="border:1px solid #333;padding:0.25rem;">&nbsp;</td></tr>
 </tbody>
@@ -742,48 +727,24 @@ export function doc30Cleaning(c: BodyContext): string {
 
 export function doc31Biological(c: BodyContext): string {
   return (
-    leadArticulatedDoc(c, "1A.06.02.03", "Esposizione a materiale biologico e sostanze pericolose") +
-    `
-<h2>Parte generale — precauzioni standard e contesto normativo</h2>
-<p>La procedura implementa le <strong>precauzioni standard</strong> (igiene delle mani, DPI, prevenzione tagli e schizzi, gestione dei rifiuti, disinfezione ambienti) e la gestione degli <strong>incidenti percutanei</strong> o delle esposizioni a materiale biologico, in coerenza con D.Lgs. 81/2008 e buone pratiche professionali odontoiatriche.</p>
-<p>Integra la <strong>sorveglianza sanitaria</strong> ove dovuta, la <strong>formazione obbligatoria</strong> e la <strong>vaccinoprofilassi</strong> secondo indicazioni del medico competente.</p>
-<h2>Flusso in caso di incidente (schema)</h2>
-<ol>
-<li>Interruzione sicura dell’attività, messa in sicurezza del luogo.</li>
-<li>Lavaggio abbondante con acqua e sapone; espulsione meccanica del sangue ove applicabile; non pratiche sconsigliate (es. caustici sulla ferita).</li>
-<li>Segnalazione al titolare / RSPP; consultazione tempestiva del medico competente o PS secondo gravità.</li>
-<li>Registrazione dell’evento, analisi delle cause, azioni correttive.</li>
-</ol>
-<h2>Kit, DPI e disponibilità</h2>
-<p>Disponibilità di <strong>DPI</strong> (guanti, mascherine, occhiali, camici), contenitori per materiali taglienti, disinfettanti; verifica periodica delle scorte.</p>
-<h2>Vaccinazioni e sorveglianza sanitaria</h2>
-<p>Le vaccinazioni e la sorveglianza sanitaria del personale seguono il parere del <strong>medico competente</strong> e le indicazioni nazionali/regionali per i lavoratori esposti a rischio biologico. Le attestazioni di idoneità o le prescrizioni sono conservate nel fascicolo del personale secondo la normativa sulla privacy e sul lavoro.</p>
-<h2>Revisione</h2>
-<p>Aggiornamento dopo infortuni, nuove sostanze o cambi organizzativi. Riferimento: <strong>${c.revision}</strong>.</p>
-` +
+    leadArticulatedDoc(
+      c,
+      "1A.06.02.03",
+      "Procedura per la protezione dagli incidenti per esposizione a materiale biologico o altre sostanze pericolose"
+    ) +
+    teresiDoc31MainHtml(c) +
     sharedClosing(c)
   );
 }
 
 export function doc32NearMiss(c: BodyContext): string {
   return (
-    leadArticulatedDoc(c, "1A.06.02.04", "Near miss, eventi avversi ed eventi sentinella") +
-    `
-<h2>Parte generale — cultura della sicurezza</h2>
-<p>Il sistema promuove la <strong>segnalazione non punitiva</strong> di situazioni potenzialmente dannose e di eventi reali, per <strong>apprendimento organizzativo</strong> e riduzione del rischio di danno al paziente e agli operatori, in linea con i requisiti di qualità e sicurezza dell’Allegato A1.</p>
-<h2>Glossario operativo</h2>
-<dl style="font-size:10.5pt;">
-<dt><strong>Near miss (quasi-evento)</strong></dt><dd>Evento che avrebbe potuto causare danno ma è stato intercettato prima (es. strumento quasi caduto nel campo sterile).</dd>
-<dt><strong>Evento avverso</strong></dt><dd>Compromissione non intenzionale della sicurezza del paziente durante l’assistenza (da lieve a grave).</dd>
-<dt><strong>Evento sentinella</strong></dt><dd>Evento raro o di particolare gravità che indica un fallimento sistemico e richiede analisi approfondita.</dd>
-</dl>
-<h2>Flusso documentato</h2>
-<p><strong>Raccolta</strong> (canale riservato al personale) → <strong>analisi delle cause</strong> (anche contributi umani e organizzativi) → <strong>azioni correttive / preventive</strong> → <strong>monitoraggio dell’efficacia</strong> → <strong>report al titolare</strong> con sintesi in sede di riesame.</p>
-<h2>Integrazione con altri processi</h2>
-<p>Allineamento con il <strong>piano rischi</strong> (1A.06.02.01), <strong>gestione reclami</strong> (1A.01.06.01), <strong>report criticità</strong> (1A.05.03.05) e formazione periodica. Revisione: <strong>${c.revision}</strong>.</p>
-<h2>Registro eventi (modello cartaceo / gestionale)</h2>
-<p>Si consiglia di tenere un <strong>registro strutturato</strong> (data, descrizione sintetica, classificazione near miss / avverso / sentinella, azioni immediate, analisi cause, azioni correttive, responsabile, stato) con accesso riservato al titolare e al personale autorizzato, nel rispetto della privacy. Le copie cartacee o gli export digitali sono conservati per i tempi definiti dalla policy interna.</p>
-` +
+    leadArticulatedDoc(
+      c,
+      "1A.06.02.04",
+      'Sistema (Piani di intervento/report) per l\'identificazione e la segnalazione di "near miss", eventi avversi ed eventi sentinella'
+    ) +
+    teresiDoc32MainHtml(c) +
     sharedClosing(c)
   );
 }
