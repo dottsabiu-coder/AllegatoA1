@@ -124,6 +124,5 @@ export function protocolloIsolamentoEstesoBlock(c: BodyContext): string {
 <p>Flussi verso ATS / Igiene e sanità pubblica quando obbligatori per legge; documentazione interna degli eventi e delle decisioni assunte dal titolare.</p>
 <h3>Formazione</h3>
 <p>Aggiornamento periodico del personale su protocolli aggiornati e su eventuali circolari regionali o nazionali.</p>
-${c.premisesSectionHtml}
 `;
 }
